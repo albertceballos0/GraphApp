@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent } from 'react';
 import {useSigma} from '@react-sigma/core'; 
 import Error from '../components/Error';
+import useGraphStore from '../store';
 
 
 interface FormData {
@@ -14,7 +15,9 @@ const FormEdge: React.FC = () => {
 
   const sigma = useSigma();
   const [error, setError] = useState<string | null>(null);
-  
+
+  const { mygraph } = useGraphStore();
+
   const NodeOptions = sigma.getGraph()._nodes.keys();
   const nodos: string[] = Array.from(NodeOptions);
 
@@ -78,6 +81,7 @@ const FormEdge: React.FC = () => {
     }
 
     try{
+        mygraph.addEdge(source, target, { tipo, label,size, weight });
         sigma.getGraph().addEdge(source, target, { tipo, label,size, weight });
         setError(null);
 

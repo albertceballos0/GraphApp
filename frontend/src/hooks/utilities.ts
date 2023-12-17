@@ -1,6 +1,4 @@
 import { MultiDirectedGraph } from "graphology";
-import { MyContextType } from "./context";
-import jsonData from "./data";
 
 interface Node {
   id: string;
@@ -17,18 +15,17 @@ interface Edge {
   size: number;
 }
 
-interface GraphData {
+export interface GraphData {
   nodes: Node[];
   edges: Edge[];
 }
 
 export function createGraphFromJSON(graph: MultiDirectedGraph, jsonData: GraphData): void {
   // Crear nodos
-  
   jsonData.nodes.forEach((node) => {
     const { id, size, label, color } = node;
     graph.addNode(id, { size, label, color });
-    
+
   });
 
   // Crear aristas
@@ -44,14 +41,4 @@ export function createGraphFromJSON(graph: MultiDirectedGraph, jsonData: GraphDa
     graph.setNodeAttribute(node, "y", 100 * Math.sin(angle));
   });
 }
-
-
-
-const graph : MultiDirectedGraph = new MultiDirectedGraph();
-createGraphFromJSON(graph, jsonData);
-
-export const contextValue: MyContextType = {
-    mygraph: graph,
-    // Agrega más valores al contexto según sea necesario
-};
 

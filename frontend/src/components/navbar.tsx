@@ -1,20 +1,22 @@
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useRef, ChangeEvent, useState } from 'react';
 import { createGraphFromJSON } from "../hooks/utilities";
-import { useMyContext } from "../hooks/context";
-import { useSigma } from '@react-sigma/core'; 
 import ForceSupervisor from "graphology-layout-force/worker";
 import FormNode from "../forms/formNode";
 import FormEdge from "../forms/formEdge";
+import { MultiDirectedGraph } from 'graphology';
+import useGraphStore from "../store";
 
 const Navbar = () => {
 
   const [addNode, setAddNode] = useState(false);
   const [addEdge, setAddEdge] = useState(false);
+  
+  const { mygraph, updateGraph } = useGraphStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const sigma = useSigma();
-  const context = useMyContext();
+
+
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -22,12 +24,13 @@ const Navbar = () => {
 
       reader.onload = (e) => {
         try {
+          
           const data = JSON.parse(e.target?.result as string);
-
-          context.mygraph.clear();
-          createGraphFromJSON(context.mygraph, data);
-          sigma.setGraph(context.mygraph);
-          const layout = new ForceSupervisor(sigma.getGraph());
+          const graph = new MultiDirectedGraph();
+          createGraphFromJSON(graph, data);
+          updateGraph(graph);
+          
+          const layout = new ForceSupervisor(graph);
           layout.start();
 
         } catch (error) {
@@ -74,6 +77,12 @@ const Navbar = () => {
                     </button>
                     <button onClick = {handleClickAddEdge} className="bg-transparent hover:bg-gray-600 text-green-500 font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded">
                         ADD EDGE
+                    </button>
+                    <button onClick = {() => console.log(sigma.getGraph()) } className="bg-transparent hover:bg-gray-600 text-green-500 font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded">
+                        ESTADO SIGMA
+                    </button>
+                    <button onClick = {() => console.log(mygraph) } className="bg-transparent hover:bg-gray-600 text-green-500 font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded">
+                        ESTADO ZUSTAND
                     </button>
                 </div>
             </div>  

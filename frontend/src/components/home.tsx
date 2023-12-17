@@ -12,12 +12,12 @@ import {
   } from "@react-sigma/core";
   import { LayoutForceAtlas2Control } from "@react-sigma/layout-forceatlas2";
 import Navbar from "./navbar";
-import MyContext from '../hooks/context';
-import { contextValue } from "../hooks/utilities";
+
 const Home = () => {
 
   return (
-        <MyContext.Provider value={contextValue}>
+        <div>
+
             <SigmaContainer style={{ height: '500px' }}
                 graph={MultiDirectedGraph}
                 settings={{ renderEdgeLabels: true}}
@@ -36,7 +36,7 @@ const Home = () => {
                 </ControlsContainer>
                 <GraphEvents />
             </SigmaContainer>
-        </MyContext.Provider>
+        </div>
         
 
    

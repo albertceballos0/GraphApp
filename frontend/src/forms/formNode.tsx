@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
-import {useSigma } from '@react-sigma/core';
 import Error from '../components/Error';
+import useGraphStore from '../store';
 
 interface FormData {
   name: string;
@@ -14,9 +14,10 @@ const SizeColorOptions: { [key: number]: string[] } = {
 };
 
 const FormNode: React.FC = () => {
-
   const [error, setError] = useState<string | null>(null)
-  const sigma = useSigma();
+
+  const {mygraph } = useGraphStore();
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     size: 15,
@@ -43,12 +44,12 @@ const FormNode: React.FC = () => {
     e.preventDefault();
     const { name, color, size} = formData;
 
-    const angle = (1 * 2* Math.PI) / sigma.getGraph().order;
+    const angle = (1 * 2* Math.PI) / mygraph.order;
     const x =  100 * Math.cos(angle);
     const y =  100 * Math.sin(angle);
 
     try{
-        sigma.getGraph().addNode(name, { size, name, color, x, y});
+        mygraph.addNode(name, { size, name, color, x, y});
         setError(null);
     }
     catch (error){
