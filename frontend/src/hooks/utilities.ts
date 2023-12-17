@@ -26,7 +26,6 @@ export function createGraphFromJSON(graph: MultiDirectedGraph, jsonData: GraphDa
   // Crear nodos
   
   jsonData.nodes.forEach((node) => {
-    console.log(node);
     const { id, size, label, color } = node;
     graph.addNode(id, { size, label, color });
     

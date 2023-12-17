@@ -20,7 +20,7 @@ const Home = () => {
         <MyContext.Provider value={contextValue}>
             <SigmaContainer style={{ height: '500px' }}
                 graph={MultiDirectedGraph}
-                settings={{ renderEdgeLabels: true }}
+                settings={{ renderEdgeLabels: true}}
 
             >
                 <Navbar />  

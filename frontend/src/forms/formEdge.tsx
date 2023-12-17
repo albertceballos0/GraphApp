@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import {useSigma} from '@react-sigma/core'; 
-import ForceSupervisor from "graphology-layout-force/worker";
+import Error from '../components/Error';
 
 
 interface FormData {
@@ -11,17 +11,19 @@ interface FormData {
 
 
 const FormEdge: React.FC = () => {
-  const sigma = useSigma();
 
+  const sigma = useSigma();
+  const [error, setError] = useState<string | null>(null);
+  
   const NodeOptions = sigma.getGraph()._nodes.keys();
   const nodos: string[] = Array.from(NodeOptions);
-  console.log(nodos);
 
   const [formData, setFormData] = useState<FormData>({
     source: nodos[0],
     target: nodos[1],
     weight: 0,
   });
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const value = parseInt(e.target.value, 10);
     setFormData((prevData) => ({
@@ -29,6 +31,7 @@ const FormEdge: React.FC = () => {
         weight: value,
       }));
   };
+
   const handleChangeSource = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const value = e.target.value;
     setFormData((prevData) => ({
@@ -46,18 +49,44 @@ const FormEdge: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Puedes hacer algo con los datos del formulario aquí
-    console.log('Datos del formulario:', formData);
+
     const { source, target, weight } = formData;
+    if(source === target ) {
+        setError('mismo origen y target');
+        return ;
+    }
     const tipo = 'lineal';
     const label = `${source} => ${target}`;
     const size= 5;
-    sigma.getGraph().addEdge(source, target, { tipo, label,size, weight });
 
-    console.log(sigma.getGraph())
-    //refresh layout
+    if(weight < 0){
+        setError('peso negativo');
+        return ;
 
-    const layout = new ForceSupervisor(sigma.getGraph());
-    layout.start();
+    }
+    const NodeOptions = sigma.getGraph()._edges.values();
+    const edges: string[] = Array.from(NodeOptions);
+    
+
+    const edgeExists = edges.some((edge) => edge.source.key === source && edge.target.key === target);
+    const edgeReverse = edges.some((edge) => edge.source.key === target && edge.target.key === source);
+
+    // Si la arista ya existe, mostrar un error
+    if (edgeExists || edgeReverse) {
+        setError('¡Ya existe esta arista!');
+        return;
+    }
+
+    try{
+        sigma.getGraph().addEdge(source, target, { tipo, label,size, weight });
+        setError(null);
+
+    }
+    catch(error){
+        setError('error añadiendo arista');
+    }
+
+
   };
 
   return (
@@ -95,6 +124,9 @@ const FormEdge: React.FC = () => {
       </div>
       <button className = 'w-full mt-3 hover:bg-gray-600 hover:text-white border border-black rounded-md'type="submit">AGREGAR ARISTA</button>
     </form>
+    {
+        error ? <Error> {error} </Error> : <></>
+    }
     </div>
   );
 };

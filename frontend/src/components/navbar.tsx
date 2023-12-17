@@ -4,8 +4,8 @@ import { createGraphFromJSON } from "../hooks/utilities";
 import { useMyContext } from "../hooks/context";
 import { useSigma } from '@react-sigma/core'; 
 import ForceSupervisor from "graphology-layout-force/worker";
-import FormNode from "./formNode";
-import FormEdge from "./formEdge";
+import FormNode from "../forms/formNode";
+import FormEdge from "../forms/formEdge";
 
 const Navbar = () => {
 
@@ -31,7 +31,7 @@ const Navbar = () => {
           layout.start();
 
         } catch (error) {
-          console.error('Error al analizar el archivo JSON:', error);
+          console.log('Error al analizar el archivo JSON:', error);
         }
       };
       reader.readAsText(file);

@@ -13,7 +13,7 @@ const GraphEvents: React.FC = () => {
         registerEvents({
           // node events
          
-          click: (event) =>
+          clickEdge: (event) =>
            {
             console.log("click", event.x, event.y);
            }

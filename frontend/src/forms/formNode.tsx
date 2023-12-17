@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from 'react';
 import {useSigma } from '@react-sigma/core';
-import ForceSupervisor from "graphology-layout-force/worker";
+import Error from '../components/Error';
 
 interface FormData {
   name: string;
@@ -14,6 +14,8 @@ const SizeColorOptions: { [key: number]: string[] } = {
 };
 
 const FormNode: React.FC = () => {
+
+  const [error, setError] = useState<string | null>(null)
   const sigma = useSigma();
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -45,12 +47,17 @@ const FormNode: React.FC = () => {
     const x =  100 * Math.cos(angle);
     const y =  100 * Math.sin(angle);
 
-    sigma.getGraph().addNode(name, { size, name, color, x, y});
+    try{
+        sigma.getGraph().addNode(name, { size, name, color, x, y});
+        setError(null);
+    }
+    catch (error){
+        console.log(error);
+        setError('error añadiendo nodo');
+
+    }
 
 
-    //refresh layout
-    const layout = new ForceSupervisor(sigma.getGraph());
-    layout.start();
   };
 
   return (
@@ -88,7 +95,9 @@ const FormNode: React.FC = () => {
         </div>
         <button className = 'w-full mt-3 hover:bg-gray-600 hover:text-white border border-black rounded-md'type="submit">AGREGAR NODO</button>
         </form>
+        { error ? <Error> {error} </Error>  : <></>}
     </div>
+
   );
 };
 
