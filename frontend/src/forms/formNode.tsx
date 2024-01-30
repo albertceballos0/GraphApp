@@ -47,9 +47,9 @@ const FormNode: React.FC = () => {
     const angle = (1 * 2* Math.PI) / mygraph.order;
     const x =  100 * Math.cos(angle);
     const y =  100 * Math.sin(angle);
-
     try{
-        mygraph.addNode(name, { size, name, color, x, y});
+
+        mygraph.addNode(name, { size, name,color, x, y});
         setError(null);
     }
     catch (error){
@@ -57,7 +57,6 @@ const FormNode: React.FC = () => {
         setError('error añadiendo nodo');
 
     }
-
 
   };
 

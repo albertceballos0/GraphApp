@@ -82,12 +82,12 @@ const FormEdge: React.FC = () => {
 
     try{
         mygraph.addEdge(source, target, { tipo, label,size, weight });
-        sigma.getGraph().addEdge(source, target, { tipo, label,size, weight });
         setError(null);
 
     }
     catch(error){
         setError('error añadiendo arista');
+        console.log(error)
     }
 
 

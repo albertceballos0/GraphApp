@@ -1,7 +1,6 @@
 import "@react-sigma/core/lib/react-sigma.min.css";
 import GraphEvents from "./graph_event";
 import MyGraph from "./mygraph";
-import Fa2 from "./layout";
 import { MultiDirectedGraph } from "graphology";
 import {
     SigmaContainer,
@@ -25,7 +24,6 @@ const Home = () => {
             >
                 <Navbar />  
                 <MyGraph />
-                <Fa2 />
                 <ControlsContainer position={"bottom-right"}>
                     <ZoomControl />
                     <FullScreenControl />

@@ -1,10 +1,7 @@
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useRef, ChangeEvent, useState } from 'react';
-import { createGraphFromJSON } from "../hooks/utilities";
-import ForceSupervisor from "graphology-layout-force/worker";
 import FormNode from "../forms/formNode";
 import FormEdge from "../forms/formEdge";
-import { MultiDirectedGraph } from 'graphology';
 import useGraphStore from "../store";
 
 const Navbar = () => {
@@ -12,7 +9,7 @@ const Navbar = () => {
   const [addNode, setAddNode] = useState(false);
   const [addEdge, setAddEdge] = useState(false);
   
-  const { mygraph, updateGraph } = useGraphStore();
+  const { mygraph, setGraphFromJson , layout} = useGraphStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -26,15 +23,10 @@ const Navbar = () => {
         try {
           
           const data = JSON.parse(e.target?.result as string);
-          const graph = new MultiDirectedGraph();
-          createGraphFromJSON(graph, data);
-          updateGraph(graph);
-          
-          const layout = new ForceSupervisor(graph);
-          layout.start();
+          setGraphFromJson(data);
 
         } catch (error) {
-          console.log('Error al analizar el archivo JSON:', error);
+          console.log('Error:', error);
         }
       };
       reader.readAsText(file);
@@ -78,12 +70,7 @@ const Navbar = () => {
                     <button onClick = {handleClickAddEdge} className="bg-transparent hover:bg-gray-600 text-green-500 font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded">
                         ADD EDGE
                     </button>
-                    <button onClick = {() => console.log(sigma.getGraph()) } className="bg-transparent hover:bg-gray-600 text-green-500 font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded">
-                        ESTADO SIGMA
-                    </button>
-                    <button onClick = {() => console.log(mygraph) } className="bg-transparent hover:bg-gray-600 text-green-500 font-semibold hover:text-white py-2 px-4 border border-black hover:border-transparent rounded">
-                        ESTADO ZUSTAND
-                    </button>
+                    
                 </div>
             </div>  
             {   addNode && !addEdge ? <FormNode /> : <></>  }

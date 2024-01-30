@@ -1,18 +1,23 @@
 // graphStore.ts
 import {create} from 'zustand';
-import { MultiDirectedGraph } from 'graphology';
-import { createGraphFromJSON } from './hooks/utilities';
+import Graph from 'graphology';
+import { GraphData, createGraphFromJSON } from './hooks/utilities';
+//import jsonData from './hooks/data';
+import ForceSupervisor from "graphology-layout-force/worker";
 import jsonData from './hooks/data';
-import { GraphData } from './hooks/utilities';
+
 // Define el tipo de estado
 type State = {
-  mygraph: MultiDirectedGraph;
+  mygraph: Graph;
+  layout: ForceSupervisor;
 };
 
 // Define el tipo de acción
 type Action = {
-  updateGraph: (mygraph: MultiDirectedGraph) => void;
-  removeGraph: () => void; // No se necesitan argumentos para clear
+  updateGraph: (mygraph: Graph) => void;
+  setGraphFromJson: () => void; 
+  addNode: ({ name,size, color, x, y} : { name: string; size: number; color: string; x: number; y:number}) => void;
+
 };
 
 // Combina ambos tipos para crear el tipo completo del store
@@ -20,14 +25,43 @@ type Store = State & Action;
 
 
 // Crea tu store con Zustand
-const useGraphStore = create<Store>((set) => ({
-  mygraph: new MultiDirectedGraph(),
+const useGraphStore = create<Store>((set) => {
+      const graph = createGraphFromJSON(jsonData);
+      console.log(graph)
+      const layout = new ForceSupervisor(graph);
+      layout.start();
 
-  // Acción para actualizar el grafo
-  updateGraph: (mygraph) => set({ mygraph }),
+      return {
+        mygraph: graph,
+        layout: layout,
+        setGraphFromJson: (data: GraphData) => {
+            try {
+                const newGraph = createGraphFromJSON(data);
+                const layout = new ForceSupervisor(newGraph);
 
-  // Acción para eliminar todos los nodos y bordes del grafo
-  removeGraph: () => set((state) => ({ mygraph: state.mygraph.clear() })),
-}));
+                set({ 
+                    mygraph: newGraph, 
+                    layout: layout,
 
+                });
+                layout.start();
+            } catch (error) {
+                console.error('Error updating graph from JSON:', error);
+            }
+            },
+        addNode: (name : string ,size : number, color: string, x : number, y : number) => {
+            try {
+                
+                set((state) => ({
+                    mygraph: state.mygraph.addNode(name, { size, name, color, x, y}),
+                  }));
+            } catch (error) {
+                console.error('Error updating graph from JSON:', error);
+            }
+        },
+
+      }   
+  });
+  
+  
 export default useGraphStore;
