@@ -1,5 +1,4 @@
-﻿#include "pch.h"
-#include "Graph.h"
+﻿#include "Graph.h"
 #include <set>
 #include <algorithm>
 #include <limits>
@@ -37,7 +36,6 @@ void backtrackingRec(CVertex* pActual)
 			}
 			if (!visit) goto següent;
 		}
-
 
 		camiOptim = camiActual;
 		costCamiOptim = costCamiActual;

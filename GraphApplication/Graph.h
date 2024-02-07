@@ -40,12 +40,12 @@ string StrPrint(const char* Format, ...);
 // =============================================================================
 
 bool MyAssertFun(const char*strcond, const char*FileName, int line, const char*Msg = NULL);
-
 #ifdef NDEBUG
 #define MyAssert(cond)
 #else
 #define MyAssert(cond) ((void) ((cond) || MyAssertFun(#cond, __FILE__, __LINE__)))
 #endif
+
 
 // =============================================================================
 // EXCEPCIONS ==================================================================
@@ -158,15 +158,6 @@ inline CGPoint Max(const CGPoint& p1, const CGPoint& p2) {
 	return CGPoint(max(p1.m_X, p2.m_X), max(p1.m_Y, p2.m_Y));
 }
 
-// =============================================================================
-// CGRect ======================================================================
-// =============================================================================
-
-
-inline ostream& operator<< (ostream& s, const CGRect &r) {
-	s << "(" << r.m_P0 << "-" << r.m_P1 << ")";
-	return s;
-}
 
 // =============================================================================
 // GRAPH Classes ===============================================================
@@ -188,7 +179,6 @@ public:
 	// Atributs generals de CVertex
 	string m_Name; // Nom del vertex
 	CGPoint m_Point; 
-	COLORREF m_Color;
 	list<CEdge*> m_Edges;
 	// Atributos de Dijkstra
 	double m_DijkstraDistance;
@@ -206,11 +196,9 @@ public:
 	bool MemberP(CEdge *pEdge);
 	bool NeighbordP(CVertex* pVertex);
 	void Unlink(CEdge *pEdge);
-	void ResetColor() {	m_Color = RGB(0, 128, 128);	}
-	void SetColor(COLORREF color) { m_Color = color; }
+
 	CVertex(const char* name, double x, double y)
 		: m_Name(name)
-		, m_Color(RGB(0, 128, 128))
 		, m_Point(x, y)
 		, m_DijkstraDistance(-1.0)
 	{}
@@ -227,26 +215,23 @@ inline ostream& operator<< (ostream& s, const CVertex& v) {
 class CEdge {
 public:
 	string m_Name; // Nom del edge
-	COLORREF m_Color;
 	double m_Length; // Valor que se le asocia al edge: longitud, peso, coste, etc.
 	CVertex* m_pOrigin;
 	CVertex* m_pDestination;
 	CEdge* m_pReverseEdge; // En caso de grafo no dirigido cada arista tiene su inverso.
 	bool m_Processed;
+	bool m_Used;
+
 public:
 	CEdge(const char* name, double length, CVertex* pOrigin, CVertex* pDestination, CEdge* pReverseEdge)
 		: m_Name(name)
-		, m_Color(RGB(0, 0, 255))
+		, m_Used(false)
 		, m_Length(length)
 		, m_pOrigin(pOrigin)
 		, m_pDestination(pDestination)
 		, m_pReverseEdge(pReverseEdge)
 	{}
-	void ResetColor() { m_Color = RGB(0, 0, 255); }
-	void SetColor(COLORREF color) {
-		m_Color = color;
-		if (m_pReverseEdge) m_pReverseEdge->m_Color = color;
-	}
+
 
 };
 
@@ -262,8 +247,7 @@ public:
 	list<CVertex> m_Vertices;
 	list<CEdge> m_Edges;
 	string m_Filename;
-	string m_BackgroundFilename;
-	CVImage* m_pBackground;
+
 	bool m_Directed; // Directed graph o undirected graph
 
 public:
@@ -271,7 +255,6 @@ public:
 	~CGraph();
 	void Clear();
 	void ClearDistances();
-	void ResetColor();
 
 	// Vertices
 	CVertex* NewVertex(const char *name, double x, double y);
@@ -299,11 +282,6 @@ public:
 	size_t GetNEdges() { return m_Edges.size(); }
 	void SetDistancesToEdgeLength();
 
-	// Background
-	void SetBackground(const char*filename);
-	CVImage* GetBackgroundImage() {
-		return m_pBackground;
-	}
 
 
 	void RandomCreation(int nVertices, int nEdges);
@@ -312,15 +290,12 @@ public:
 	void ToPlannar();
 
 	void Load(const char* filename);
-	void Save(const char* filename);
 	void LoadDistances(const char* filename);
-	void SaveDistances(const char* filename);
-
-	CGRect RectHull();
-	bool Invariant();
 
 	//CMaxFlow ReadMaxFlow(const char* filename);
 };
+
+ostream& operator<< (ostream& s, const CGraph& graph);
 
 // =============================================================================
 // CVisits =====================================================================
@@ -404,59 +379,7 @@ public:
 
 ostream& operator<< (ostream& s, const CTrack& track);
 
-// =============================================================================
-// CSpanningTree ===============================================================
-// =============================================================================
 
-class CSpanningTree {
-public:
-	list<CEdge*> m_Edges;
-	CGraph* m_pGraph;
-	//CTrack() { m_pGraph = NULL; }
-	CSpanningTree(CGraph* pGraph) {
-		m_pGraph = pGraph;
-	}
-	void SetGraph(CGraph* pGraph) {
-		Clear();
-		m_pGraph = pGraph;
-
-	}
-	CSpanningTree(const CTrack& t) : m_pGraph(t.m_pGraph), m_Edges(t.m_Edges) {}
-	CSpanningTree operator=(const CSpanningTree& t) {
-		m_pGraph = t.m_pGraph;
-		m_Edges = t.m_Edges;
-		return *this;
-	}
-	void Add(CEdge* pEdge) {
-		m_Edges.push_front(pEdge);
-	}
-	void Delete(CVertex* pVertex);
-	void Delete(CEdge* pEdge);
-	void Clear() {
-		m_Edges.clear();
-	}
-	size_t GetNEdges() { return m_Edges.size(); }
-
-
-	// Files ----------------------------------------------------------------	
-	void Save(const char* filename);
-	void Load(const char* filename);
-
-	// Length -------------------------------------------------------------------
-	double Length();
-
-	bool MemberP(CEdge* pE);
-	bool MemberP(CVertex* pV);
-};
-
-ostream& operator<< (ostream& s, const CSpanningTree& track);
-
-// =============================================================================
-// CConvexHull =================================================================
-// =============================================================================
-
-
-ostream& operator<< (ostream& s, const CConvexHull& ch);
 
 // =============================================================================
 // ALGORITHMS ==================================================================

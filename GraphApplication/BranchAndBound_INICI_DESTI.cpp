@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Graph.h"
 #include <queue>
 
@@ -55,7 +54,6 @@ CTrack TrobaCamiBranchAndBound(CGraph& g)
 	priority_queue<CBBNode*, std::vector<CBBNode*>, comparator> queue;
 	pInici->SetColor(RGB(255, 100, 0));
 	for (CEdge* pE : pInici->m_Edges) {
-		pE->SetColor(RGB(255, 100, 0));
 		queue.push(new CBBNode(&g, pE, pDesti));
 		++SolutionNodesCreated;
 	}
@@ -86,7 +84,6 @@ CTrack TrobaCamiBranchAndBound(CGraph& g)
 				pSNew->m_Length = pS->m_Length + pE->m_Length;
 				pSNew->m_WeigthMin = w;
 				pSNew->m_Track.AddLast(pE);
-				pE->SetColor(RGB(255, 100, 0));
 				queue.push(pSNew);
 				if (pE->m_pDestination == pDesti) maxLength = w;
 			}
@@ -165,7 +162,6 @@ CTrack TrobaCamiBranchAndBoundLink(CGraph& g)
 	priority_queue<CBBLinkNode*, std::vector<CBBLinkNode*>, comparatorLink> queue;
 	pInici->SetColor(RGB(255, 100, 0));
 	for (CEdge* pE : pInici->m_Edges) {
-		pE->SetColor(RGB(255, 100, 0));
 		queue.push(new CBBLinkNode(pE,pDesti));
 		++SolutionNodesCreated;
 	}
@@ -194,7 +190,6 @@ CTrack TrobaCamiBranchAndBoundLink(CGraph& g)
 				}
 				CBBLinkNode* pSNew = new CBBLinkNode(pS,pE,w);
 				++SolutionNodesCreated;
-				pE->SetColor(RGB(255, 100, 0));
 				queue.push(pSNew);
 				if (pE->m_pDestination == pDesti) maxLength = w;
 			}
@@ -276,7 +271,6 @@ CTrack TrobaCamiBranchAndBoundLink2(CGraph& g)
 	priority_queue<CBBLinkNode2*, std::vector<CBBLinkNode2*>, comparatorLink2> queue;
 	pInici->SetColor(RGB(255, 100, 0));
 	for (CEdge* pE : pInici->m_Edges) {
-		pE->SetColor(RGB(255, 100, 0));
 		queue.push(new CBBLinkNode2(pE, pDesti));
 		++SolutionNodesCreated;
 	}
@@ -309,7 +303,6 @@ CTrack TrobaCamiBranchAndBoundLink2(CGraph& g)
 				else {
 					CBBLinkNode2* pSNew = new CBBLinkNode2(pS, pE, minLength, w);
 					++SolutionNodesCreated;
-					pE->SetColor(RGB(255, 100, 0));
 					queue.push(pSNew);
 				}
 			}

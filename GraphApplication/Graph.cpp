@@ -1,10 +1,7 @@
 // AssertsMaximFluxe.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
 
-#include "pch.h"
 #include "Graph.h"
-#include <stdarg.h>
-#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -18,20 +15,7 @@ using namespace std;
 
 // Clock =======================================================================
 
-double Clock()
-{
-	LARGE_INTEGER cnt;
-	LARGE_INTEGER fre;
 
-	if (QueryPerformanceFrequency(&fre) && QueryPerformanceCounter(&cnt)) {
-		//cout << 1.0 / (double)fre.QuadPart << endl;
-		return (double)cnt.QuadPart / (double)fre.QuadPart;
-	}
-	else {
-		//return 0.0;
-		return (double)clock() / (double)CLOCKS_PER_SEC;
-	}
-}
 
 // StrPrint ====================================================================
 
@@ -137,7 +121,6 @@ void CVertex::Unlink(CEdge *pEdge)
 
 CGraph::CGraph(bool directed)
 {
-	m_pBackground = NULL;
 	m_Directed=directed;
 }
 
@@ -145,7 +128,6 @@ CGraph::CGraph(bool directed)
 
 CGraph::~CGraph()
 {
-	if (m_pBackground) delete m_pBackground;
 }
 
 // Clear =======================================================================
@@ -154,9 +136,7 @@ void CGraph::Clear()
 {
 	m_Vertices.clear();
 	m_Edges.clear();
-	if (m_pBackground) delete m_pBackground;
-	m_pBackground = NULL;
-	m_BackgroundFilename.clear();
+
 }
 
 // ClearDistances ==============================================================
@@ -167,13 +147,7 @@ void CGraph::ClearDistances()
 }
 
 
-// ResetColor ==================================================================
 
-void  CGraph::ResetColor()
-{
-	for (CVertex& v : m_Vertices) v.ResetColor();
-	for (CEdge& e : m_Edges) e.ResetColor();
-}
 
 // NewVertex ==================================================================
 
@@ -480,25 +454,6 @@ void CGraph::SetDistancesToEdgeLength()
 
 // SetBackground ===============================================================
 
-void CGraph::SetBackground(const char* filename)
-{
-	if (m_pBackground) delete m_pBackground;
-	char path[_MAX_DRIVE+ _MAX_DIR+ _MAX_FNAME+ _MAX_EXT];
-	char dir[_MAX_DIR];
-	_splitpath_s(m_Filename.c_str(), path, _MAX_DRIVE, dir, _MAX_DIR, NULL,0, NULL,0);
-	strcat_s(path, dir);
-	strcat_s(path, filename);
-
-	try {
-		m_pBackground = CVReadImage(path);
-		m_BackgroundFilename = filename;
-	}
-	catch (exception &ex) {
-		AfxMessageBox(ex.what(), MB_ICONEXCLAMATION);
-		m_pBackground = NULL;
-		m_BackgroundFilename.clear();
-	}
-}
 
 // Load ========================================================================
 
@@ -516,7 +471,6 @@ void CGraph::Load(const char* filename)
 	file.getline(buff, 255);
 	if (strncmp("BACKGROUND ", buff, strlen("BACKGROUND ")) == 0) {
 		cout << buff + strlen("BACKGROUND ") << endl;
-		SetBackground(buff + strlen("BACKGROUND "));
 		file.getline(buff, 255);
 	}
 	m_Directed = strcmp("DIRECTED", buff) == 0;
@@ -564,38 +518,6 @@ void CGraph::Load(const char* filename)
 	*/
 }
 
-// Save ========================================================================
-
-void CGraph::Save(const char* filename)
-{
-	ofstream file(filename);
-	if (!file.good()) throw MyException("Error obrint fitxer %s", filename);
-	file << "GRAPH 1.0" << endl;
-	if (m_pBackground) file << "BACKGROUND " << m_BackgroundFilename << endl;
-	if (m_Directed) file << "DIRECTED" << endl;
-	else file << "UNDIRECTED" << endl;
-	file << "VERTICES" << endl;
-	for ( CVertex &v : m_Vertices) {
-		file << v.m_Name << " " << setprecision(20) << v.m_Point.m_X << " " << setprecision(20) << v.m_Point.m_Y << endl;
-	}
-	file << "EDGES" << endl;
-	for (CEdge& e : m_Edges) e.m_Processed = false;
-	if (m_Directed) {
-		for (CEdge& e : m_Edges) {
-			file << e.m_Name << " " << setprecision(20) << e.m_Length << " " << e.m_pOrigin->m_Name << " " << e.m_pDestination->m_Name << endl;
-		}
-	}
-	else {
-		for (CEdge& e : m_Edges) {
-			if (!e.m_Processed) {
-				file << e.m_Name << " " << e.m_Length << " " << e.m_pOrigin->m_Name << " " << e.m_pDestination->m_Name << endl;
-				e.m_pReverseEdge->m_Processed = true;
-			}
-		}
-	}
-	file.close();
-}
-
 // LoadDistances ========================================================================
 
 void CGraph::LoadDistances(const char* filename)
@@ -618,99 +540,9 @@ void CGraph::LoadDistances(const char* filename)
 	file.close();
 }
 
-// SaveDistances ========================================================================
 
-void CGraph::SaveDistances(const char* filename)
-{
-	ofstream file(filename);
-	if (!file.good()) throw MyException("Error obrint fitxer %s", filename);
-	file << "DISTANCES 1.0" << endl;
-	for (CVertex& v : m_Vertices) {
-		file << v.m_Name << " " << setprecision(20) <<  v.m_DijkstraDistance << endl;
-	}
-	file.close();
-}
 
-// RectHull ====================================================================
 
-CGRect CGraph::RectHull()
-{
-	CGPoint mins(numeric_limits<double>::max(), numeric_limits<double>::max());
-	CGPoint maxs(numeric_limits<double>::lowest(), numeric_limits<double>::lowest());
-	if (m_pBackground) {
-		mins.m_X = m_pBackground->GetOrigenX();
-		mins.m_Y = m_pBackground->GetOrigenY();
-		maxs.m_X = m_pBackground->GetOrigenX()+m_pBackground->GetszX();
-		maxs.m_Y = m_pBackground->GetOrigenY() + m_pBackground->GetszY();
-	}
-	for (CVertex &v : m_Vertices) {
-		mins = Min(mins, v.m_Point);
-		maxs = Max(maxs, v.m_Point);
-	}
-	if (mins.m_X >= maxs.m_X) return CGRect(0, 0, 1000, 1000);
-	else return CGRect(mins, maxs);
-}
-
-// Invariant ===================================================================
-
-bool CGraph::Invariant()
-{
-	SetDistancesToEdgeLength();
-	cout << "Verficar pertenencia vertices" << endl;
-	for (CVertex& v : m_Vertices) {
-		for (CEdge* pE : v.m_Edges) {
-			if (!MemberP(pE)) return false;
-			if (pE->m_pOrigin != &v) return false;
-		}
-	}
-	cout << "Verficar pertenencia edges" << endl;
-	for (CEdge& e : m_Edges) {
-		if (!MemberP(e.m_pOrigin)) return false;
-		if (!MemberP(e.m_pDestination)) return false;
-		if (m_Directed) {
-			if (e.m_pReverseEdge != NULL) return false;
-		}
-		else {
-			if (e.m_pReverseEdge == NULL) return false;
-			if (!MemberP(e.m_pReverseEdge)) return false;
-			if (e.m_pOrigin != e.m_pReverseEdge->m_pDestination) return false;
-			if (e.m_pDestination != e.m_pReverseEdge->m_pOrigin) return false;
-		}
-		if (e.m_pOrigin == e.m_pDestination) return false;
-	}
-	cout << "Verificar no repeticion nombres vertices" << endl;
-	for (list<CVertex>::iterator i = m_Vertices.begin(); i != m_Vertices.end();) {
-		CVertex& v = *i;
-		++i;
-		for (list<CVertex>::iterator i2 = i; i2 != m_Vertices.end(); ++i2) {
-			if (v.m_Name == i2->m_Name) return false;
-		}
-	}
-	cout << "Verificar no repeticion nombres aristas" << endl;
-	for (list<CEdge>::iterator i = m_Edges.begin(); i != m_Edges.end();) {
-		CEdge& e = *i;
-		++i;
-		for (list<CEdge>::iterator i2 = i; i2 != m_Edges.end(); ++i2) {
-			if (e.m_Name == i2->m_Name) return false;
-		}
-	}
-	// Verificar que las distancias de los edges son suficentemente diferentes
-	cout << "Verificar diferencias de longitudes de las aristas" << endl;
-	for (list<CEdge>::iterator i = m_Edges.begin(); i != m_Edges.end();) {
-		CEdge& e = *i;
-		++i;
-		for (list<CEdge>::iterator i2 = i; i2 != m_Edges.end(); ++i2) {
-			if (abs(e.m_Length - i2->m_Length) < 0.00001 && e.m_pReverseEdge!=&*(i2)) {
-				cout << "Dif " << abs(e.m_Length - i2->m_Length) << endl;
-				//return false;
-			}
-		}
-	}
-
-	return true;
-}
-
-// RandomCreation ==============================================================
 
 void CGraph::RandomCreation(int nVertices, int nEdges)
 {
@@ -981,6 +813,33 @@ void CVisits::RandomCreation(int nVisits, bool ciclo)
 
 // << ==========================================================================
 
+ostream& operator<<(ostream& s, const CGraph& graph)
+{
+	s << " DIRECTED: " << graph.m_Directed << endl;
+	s << " Vertices : { ";
+	for (list<CVertex>::const_iterator iter = graph.m_Vertices.cbegin(); iter != graph.m_Vertices.cend();) {
+		const CVertex pV = *iter;
+		s << pV.m_Name;
+		++iter;
+		if (iter != graph.m_Vertices.cend()) {
+			s << ",";
+		}
+	}
+	s << "}" << endl;
+	s << " Aristas : { ";
+	for (list<CEdge>::const_iterator iter = graph.m_Edges.cbegin(); iter != graph.m_Edges.cend();) {
+		const CEdge pV = *iter;
+		s << pV.m_Name;
+		s << "( " << pV.m_pOrigin->m_Name << ", " << pV.m_pDestination->m_Name << " )";
+		++iter;
+		if (iter != graph.m_Edges.cend()) {
+			s << ",";
+		}
+	}
+	s << "}" << endl;
+	return s;
+}
+
 ostream& operator<< (ostream& s, const CVisits& visits)
 {
 	s << "{";
@@ -1140,227 +999,6 @@ ostream& operator<< (ostream& s, const CTrack& track)
 			s << pE->m_pOrigin->m_Name << " -(" << pE->m_Name << ")->";
 		}
 		s << track.m_Edges.back()->m_pDestination->m_Name;
-	}
-	s << "]";
-	return s;
-}
-
-// =============================================================================
-// CSpanningTree ===============================================================
-// =============================================================================
-// Lista de aristas que forman un camino
-
-// Delete ======================================================================
-
-void CSpanningTree::Delete(CVertex* pVertex)
-{
-	for (list<CEdge*>::iterator iter = m_Edges.begin(); iter != m_Edges.end();) {
-		if ((*iter)->m_pOrigin==pVertex || (*iter)->m_pDestination == pVertex) {
-			list<CEdge*>::iterator tmp = iter;
-			++iter;
-			m_Edges.erase(tmp);
-		}
-		else ++iter;
-	}
-}
-
-// Delete ======================================================================
-
-void CSpanningTree::Delete(CEdge* pEdge)
-{
-	for (list<CEdge*>::iterator iter = m_Edges.begin(); iter != m_Edges.end();) {
-		if (*iter == pEdge) {
-			list<CEdge*>::iterator tmp = iter;
-			++iter;
-			m_Edges.erase(tmp);
-		}
-		else ++iter;
-	}
-}
-
-
-// Save =======================================================================
-
-void CSpanningTree::Save(const char* filename)
-{
-	ofstream  f(filename);
-	if (!f.good()) {
-		char msg[256];
-		sprintf_s(msg, "Error opening track %s", filename);
-		throw exception(msg);
-	}
-	f << "SPANNNING TREE 1.0" << endl;
-	for (list<CEdge*>::const_iterator iter = m_Edges.cbegin(); iter != m_Edges.cend(); ++iter) {
-		const CEdge* pEdge = *iter;
-		f << pEdge->m_Name << endl;
-	}
-	f.close();
-}
-
-// Load ========================================================================
-
-void CSpanningTree::Load(const char* filename)
-{
-
-	Clear();
-	ifstream  f(filename);
-	if (!f.good()) {
-		throw MyException("Error opening track %s", filename);
-	}
-	try {
-		char buf[256];
-		f.getline(buf, 256);
-		if (strcmp(buf, "SPANNNING TREE 1.0") != 0) {
-			throw MyException("CTrack::Read: el fichero no tiene formato de fichero de track: %s", filename);
-		}
-		// leer vértices
-		while (!f.eof()) {
-			f.getline(buf, 256);
-			if (buf[0] == '\0') break;
-			char edgeName[256];
-			sscanf_s(buf, "%s", edgeName, 256);
-			CEdge* pEdge = m_pGraph->FindEdge(edgeName);
-			Add(pEdge);
-		}
-		f.close();
-	}
-	catch (exception) {
-		f.close();
-		Clear();
-		throw;
-	}
-
-}
-
-// Length ======================================================================
-
-double CSpanningTree::Length() {
-	double l = 0.0;
-	for (CEdge* pE : m_Edges) {
-		l += pE->m_Length;
-	}
-	return l;
-}
-
-// MemberP =====================================================================
-
-bool CSpanningTree::MemberP(CEdge* pE) {
-	for (CEdge* pE2 : m_Edges) {
-		if (pE2 == pE) return true;
-	}
-	return false;
-}
-
-// MemberP =====================================================================
-
-bool CSpanningTree::MemberP(CVertex* pV) {
-	for (CEdge* pE : m_Edges) {
-		if (pE->m_pOrigin == pV || pE->m_pDestination == pV) return true;
-	}
-	return false;
-}
-
-// << ==========================================================================
-
-ostream& operator<< (ostream& s, const CSpanningTree& tree)
-{
-	s << "{";
-	if (!tree.m_Edges.empty()) {
-		bool first = true;
-		for (CEdge* pE : tree.m_Edges) {
-			if (first) first = false;
-			else s << ", ";
-			s << pE->m_pOrigin->m_Name << "--(" << pE->m_Name << ")-->" << pE->m_pDestination->m_Name;
-		}
-	}
-	s << "}";
-	return s;
-}
-
-// =============================================================================
-// CConvexHull =================================================================
-// =============================================================================
-// Lista de vértices
-
-// Delete ======================================================================
-
-void CConvexHull::Delete(CVertex* pVertex)
-{
-	for (list<CVertex*>::iterator iter = m_Vertices.begin(); iter != m_Vertices.end();) {
-		if (*iter == pVertex) {
-			list<CVertex*>::iterator tmp = iter;
-			++iter;
-			m_Vertices.erase(tmp);
-		}
-		else ++iter;
-	}
-}
-
-// MemberP =====================================================================
-
-bool CConvexHull::MemberP(CVertex* pVertex)
-{
-	for (CVertex* pV : m_Vertices) 	if (pV == pVertex) return true;
-	return false;
-}
-
-// Save =======================================================================
-
-void CConvexHull::Save(const char* filename) {
-	ofstream  f(filename);
-	if (!f.good()) {
-		throw MyException("Error opening convex hull %s", filename);
-	}
-	f << "CONVEX_HULL 1.0" << endl;
-	for (CVertex* pV : m_Vertices) {
-		f << pV->m_Name << endl;
-	}
-	f.close();
-}
-
-// Load ========================================================================
-
-void CConvexHull::Load(const char* filename) {
-	Clear();
-	ifstream  f(filename);
-	if (!f.good()) {
-		throw MyException("Error opening convex hull %s", filename);
-	}
-	try {
-		char buf[256];
-		f.getline(buf, 256);
-		if (strcmp(buf, "CONVEX_HULL 1.0") != 0) {
-			throw MyException("CConvexHull::Read: el fichero no tiene formato de fichero de convex hull: %s", filename);
-		}
-		// leer vértices
-		while (!f.eof()) {
-			f.getline(buf, 256);
-			if (buf[0] == '\0') break;
-			CVertex* pVertex = m_pGraph->FindVertex(buf);
-			if (!pVertex) throw MyException("Vertex not found in graph: %s", buf);
-			m_Vertices.push_back(pVertex);
-		}
-		f.close();
-	}
-	catch (exception) {
-		f.close();
-		Clear();
-		throw;
-	}
-}
-
-// << ==========================================================================
-
-ostream& operator<< (ostream& s, const CConvexHull& ch)
-{
-	s << "[";
-	for (list<CVertex*>::const_iterator iter = ch.m_Vertices.cbegin(); iter != ch.m_Vertices.cend();) {
-		const CVertex* pV = *iter;
-		s << pV->m_Name;
-		++iter;
-		if (iter != ch.m_Vertices.cend()) {
-			s << ",";
-		}
 	}
 	s << "]";
 	return s;

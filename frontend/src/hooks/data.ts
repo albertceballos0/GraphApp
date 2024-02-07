@@ -10,14 +10,14 @@ const jsonData = {
     { "id": "Kouign Amann", "size": 7, "label": "Kouign Amann", "color": "#00FF00" }
   ],
   "edges": [
-    { "source": "John", "target": "Mary", "type": "line", "label": "works with", "size": 5 },
-    { "source": "Mary", "target": "Suzan", "type": "line", "label": "works with", "size": 5 },
-    { "source": "Mary", "target": "Nantes", "type": "arrow", "label": "lives in", "size": 5 },
-    { "source": "John", "target": "New-York", "type": "arrow", "label": "lives in", "size": 5 },
-    { "source": "Suzan", "target": "New-York", "type": "arrow", "label": "lives in", "size": 5 },
-    { "source": "John", "target": "Falafels", "type": "arrow", "label": "eats", "size": 5 },
-    { "source": "Mary", "target": "Sushis", "type": "arrow", "label": "eats", "size": 5 },
-    { "source": "Suzan", "target": "Kouign Amann", "type": "arrow", "label": "eats", "size": 5 }
+    { "source": "John", "target": "Mary", "type": "line", "label": "works with", "size": 1, "weight" : 200 },
+    { "source": "Mary", "target": "Suzan", "type": "line", "label": "works with", "size": 1, "weight" : 200},
+    { "source": "Mary", "target": "Nantes", "type": "arrow", "label": "lives in", "size": 1, "weight" : 200 },
+    { "source": "John", "target": "New-York", "type": "arrow", "label": "lives in", "size": 1 , "weight" : 200},
+    { "source": "Suzan", "target": "New-York", "type": "arrow", "label": "lives in", "size": 1 , "weight" : 200},
+    { "source": "John", "target": "Falafels", "type": "arrow", "label": "eats", "size": 1, "weight" : 200 },
+    { "source": "Mary", "target": "Sushis", "type": "arrow", "label": "eats", "size": 1, "weight" : 200 },
+    { "source": "Suzan", "target": "Kouign Amann", "type": "arrow", "label": "eats", "size": 1 , "weight" : 200}
   ]
 }
 

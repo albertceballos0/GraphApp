@@ -1,6 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
-import {useSigma} from '@react-sigma/core'; 
-import Error from '../components/Error';
+import React, { useState, ChangeEvent, useEffect } from 'react';
 import useGraphStore from '../store';
 
 
@@ -13,12 +11,10 @@ interface FormData {
 
 const FormEdge: React.FC = () => {
 
-  const sigma = useSigma();
+  const { mygraph, addEdge } = useGraphStore();
   const [error, setError] = useState<string | null>(null);
 
-  const { mygraph } = useGraphStore();
-
-  const NodeOptions = sigma.getGraph()._nodes.keys();
+  const NodeOptions = mygraph.nodes();
   const nodos: string[] = Array.from(NodeOptions);
 
   const [formData, setFormData] = useState<FormData>({
@@ -26,7 +22,6 @@ const FormEdge: React.FC = () => {
     target: nodos[1],
     weight: 0,
   });
-
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const value = parseInt(e.target.value, 10);
     setFormData((prevData) => ({
@@ -48,7 +43,7 @@ const FormEdge: React.FC = () => {
         ...prevData,
         target: value,
     }));  };
-    
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Puedes hacer algo con los datos del formulario aquí
@@ -60,78 +55,79 @@ const FormEdge: React.FC = () => {
     }
     const tipo = 'lineal';
     const label = `${source} => ${target}`;
-    const size= 5;
+    const size= 1;
 
     if(weight < 0){
         setError('peso negativo');
         return ;
 
     }
-    const NodeOptions = sigma.getGraph()._edges.values();
-    const edges: string[] = Array.from(NodeOptions);
-    
 
-    const edgeExists = edges.some((edge) => edge.source.key === source && edge.target.key === target);
-    const edgeReverse = edges.some((edge) => edge.source.key === target && edge.target.key === source);
+    const edgeExists = mygraph.edges(source,target);
+    const edgeReverse = mygraph.edges(target,source);
 
     // Si la arista ya existe, mostrar un error
-    if (edgeExists || edgeReverse) {
+    if (edgeExists.length> 0 || edgeReverse.length > 0) {
         setError('¡Ya existe esta arista!');
         return;
     }
 
     try{
-        mygraph.addEdge(source, target, { tipo, label,size, weight });
+
+        addEdge(source, target, { tipo, label,size, weight });
         setError(null);
 
+        
     }
     catch(error){
         setError('error añadiendo arista');
         console.log(error)
     }
 
-
   };
 
   return (
-    <div className="mt-10 bg-gray-200 ml-20 mr-20 px-4 py-2 border border-black rounded-md ">
-    <form onSubmit={handleSubmit}>
-      <div className='flex mt-2'>
-        <label className='w-1/3 justify-center text-center' htmlFor="source">Nodo Fuente:</label>
-        <select className='w-full' value={formData.source} onChange={handleChangeSource}>
-          {nodos.map((node) => (
-            <option key={node} value={node}>
-              {node}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className='flex mt-2'>
-        <label className='w-1/3 justify-center text-center' htmlFor="target">Nodo Destino:</label>
-        <select className='w-full' value={formData.target} onChange={handleChangeTarget}>
-          {nodos.map((node) => (
-            <option key={node} value={node}>
-              {node}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className='flex mt-2'>
-        <label className='w-1/3 justify-center text-center' htmlFor="weight">Peso:</label>
-        <input className='w-full'
-          type="number"
-          id="weight"
-          name="weight"
-          value={formData.weight}
-          onChange={handleChange}
-        />
-      </div>
-      <button className = 'w-full mt-3 hover:bg-gray-600 hover:text-white border border-black rounded-md'type="submit">AGREGAR ARISTA</button>
-    </form>
-    {
-        error ? <Error> {error} </Error> : <></>
-    }
+    <div className="mt-10 bg-gray-200 ml-20 mr-20 px-4 py-2 border border-yellow-500 rounded-lg">
+      <form onSubmit={handleSubmit}>
+        <div className="flex flex-col space-y-4">
+          <div className="flex items-center space-x-4">
+            <label className="w-1/3 text-gray-700" htmlFor="source">
+              Nodo Fuente:
+            </label>
+            <select className="w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:ring-opacity-50" value={formData.source} onChange={handleChangeSource}>
+              {nodos.map((node) => (
+                <option key={node} value={node}>
+                  {node}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center space-x-4">
+            <label className="w-1/3 text-gray-700" htmlFor="target">
+              Nodo Destino:
+            </label>
+            <select className="w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:ring-opacity-50" value={formData.target} onChange={handleChangeTarget}>
+              {nodos.map((node) => (
+                <option key={node} value={node}>
+                  {node}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center space-x-4">
+            <label className="w-1/3 text-gray-700" htmlFor="weight">
+              Peso:
+            </label>
+            <input className="w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500 focus:ring-opacity-50" type="number" id="weight" name="weight" value={formData.weight} onChange={handleChange} />
+          </div>
+          <button className="w-full py-2 bg-yellow-500 text-white font-semibold rounded-md shadow-md hover:bg-yellow-600" type="submit">
+            AGREGAR ARISTA
+          </button>
+        </div>
+      </form>
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
+
   );
 };
 
