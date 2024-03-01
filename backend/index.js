@@ -45,12 +45,12 @@ io.on('connection', (socket) => {
     }
   }); 
   socket.on('prepared', (data) =>{
-    console.log(data);
+    console.log('prepared', data);
     socket.broadcast.emit('prepared', data);
     
   });
   socket.on('conectado', (data) =>{
-    console.log(data);
+    console.log('conectado', data);
     socket.broadcast.emit('conectado', data);
     
   });
@@ -71,7 +71,7 @@ io.on('connection', (socket) => {
     }
   });
   socket.on('logueado', (message) =>{
-      console.log(message);
+      console.log('logueado', message);
       socket.broadcast.emit('logueado' , message);
     
   });

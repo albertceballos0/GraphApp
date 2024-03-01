@@ -61,6 +61,7 @@ async def on_track(track):
     else:
         print(f"Folder∫s already exists.")
     frame_count = 0
+    
     start_time = time.time()
     total_time = time.time()
     total = 0

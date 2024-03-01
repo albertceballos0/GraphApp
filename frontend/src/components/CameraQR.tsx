@@ -2,16 +2,15 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { IoHomeOutline } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
-import Peer from 'peerjs';
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
 
-const CameraQR = () => {
-  const [qrImageUrl, setQrImageUrl] = useState('');
+const CameraQR: React.FC = () => {
+  const [qrImageUrl, setQrImageUrl] = useState<string>('');
   const navigate = useNavigate();
-  const [cameraApp, setCameraApp] = useState(false);
-  const [data, setData] = useState('');
-  
-  const socketRef = useRef(null);
+  const [cameraApp, setCameraApp] = useState<boolean>(false);
+  const [data, setData] = useState<string>('');
+
+  const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
     socketRef.current = io('http://localhost:3000');
@@ -19,11 +18,11 @@ const CameraQR = () => {
     let identifier: string | null = null;
     const generateQRAndToken = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/camera/generate-qr');
+        const response = await axios.get<{ imageQr: string; token: string }>('http://localhost:3000/camera/generate-qr');
         setQrImageUrl(response.data.imageQr);
         localStorage.setItem('token', response.data.token);
         identifier = response.data.token;
-        socketRef.current.emit('conectado', { token : identifier});
+        socketRef.current!.emit('conectado', { token: identifier });
       } catch (error) {
         console.error('Error al generar el QR y el token:', error);
       }
@@ -33,11 +32,10 @@ const CameraQR = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get(`http://localhost:3000/camera/validate-token/${token}`);
+          const response = await axios.get<{ validate: boolean; imageQr: string }>(`http://localhost:3000/camera/validate-token/${token}`);
           if (response.data.validate === true) {
             identifier = token;
-            socketRef.current.emit('conectado', { token : identifier});
-
+            socketRef.current!.emit('conectado', { token: identifier });
             return response.data.imageQr;
           }
         } catch (error) {
@@ -57,42 +55,38 @@ const CameraQR = () => {
     };
     loadQRImage();
 
-    
-
-    socketRef.current.on('logueado', (data) => {
-      if(identifier !== data.token) return -1;
+    socketRef.current!.on('logueado', (data) => {
+      if (identifier !== data.token) return -1;
       setCameraApp(true);
       setData('conexion establecida');
-    }); 
-    socketRef.current.on('logout',  (data) => {
+    });
+    socketRef.current!.on('logout', (data) => {
       console.log(data.token, identifier);
-      if(identifier !== data.token) return -1;
+      if (identifier !== data.token) return -1;
       setCameraApp(false);
-    }); 
-    socketRef.current.on('withoutTrack', async (data) => {
-      if(identifier !== data.token) return -1;
+    });
+    socketRef.current!.on('withoutTrack', async (data) => {
+      if (identifier !== data.token) return -1;
       const message_type = data.type;
-      if (message_type === 'withoutTrack')
-      {
+      if (message_type === 'withoutTrack') {
         setData(message_type);
       }
     });
 
-    socketRef.current.on('onTrack', async (data) => {
-      if(identifier !== data.token) return -1;
+    socketRef.current!.on('onTrack', async (data) => {
+      if (identifier !== data.token) return -1;
       const message_type = data.type;
-      if(message_type === 'onTrack'){
+      if (message_type === 'onTrack') {
         setData(message_type);
       }
     });
-    socketRef.current.on('conectado', async (data) => {
-      if(identifier !== data.token) return -1;
-        setCameraApp(true);
-        setData('conexion establecida');
-
+    socketRef.current!.on('conectado', async (data) => {
+      console.log("hola");
+      if (identifier !== data.token) return -1;
+      setCameraApp(true);
+      setData('conexion establecida');
     });
   }, []);
-
 
   return (
     <div className='bg-red-800 h-full'>
