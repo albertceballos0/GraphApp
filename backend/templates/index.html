@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Stream</title>
+</head>
+<body>
+    <h1>Video Stream</h1>
+    <video id="videoElement" width="640" height="480" autoplay></video>
+
+    <script>
+        // Obtener acceso a la cámara y mostrar el video en un elemento de video
+        async function startVideo() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                const videoElement = document.getElementById('videoElement');
+                videoElement.srcObject = stream;
+            } catch (error) {
+                console.error('Error accessing media devices:', error);
+            }
+        }
+        // Llamar a la función para iniciar el video cuando la página esté completamente cargada
+        window.onload = startVideo;
+    </script>
+</body>
+</html>
