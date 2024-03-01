@@ -1,2 +1,4 @@
+.gitignore
 /backend/fileRecognition
 /TestSalesMan
+.DS_Store
