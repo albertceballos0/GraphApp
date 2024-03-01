@@ -22,7 +22,7 @@ const CameraQR: React.FC = () => {
         setQrImageUrl(response.data.imageQr);
         localStorage.setItem('token', response.data.token);
         identifier = response.data.token;
-        socketRef.current!.emit('conectado', { token: identifier });
+        socketRef.current!.emit('conectado', { token: identifier, type: 'qr' });
       } catch (error) {
         console.error('Error al generar el QR y el token:', error);
       }
@@ -35,7 +35,7 @@ const CameraQR: React.FC = () => {
           const response = await axios.get<{ validate: boolean; imageQr: string }>(`http://localhost:3000/camera/validate-token/${token}`);
           if (response.data.validate === true) {
             identifier = token;
-            socketRef.current!.emit('conectado', { token: identifier });
+            socketRef.current!.emit('conectado', { token: identifier, type: 'qr' });
             return response.data.imageQr;
           }
         } catch (error) {
@@ -81,10 +81,12 @@ const CameraQR: React.FC = () => {
       }
     });
     socketRef.current!.on('conectado', async (data) => {
-      console.log("hola");
+      console.log("hola", data);
       if (identifier !== data.token) return -1;
-      setCameraApp(true);
-      setData('conexion establecida');
+      if(data.type === 'app'){
+        setCameraApp(true);
+        setData('conexion establecida');
+      }
     });
   }, []);
 

@@ -19,15 +19,6 @@ const CameraApp: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const socket = useRef<Socket>(io('http://localhost:3000'));
 
-  useEffect(() => {
-    socket.current.on('conectado', (data) => {
-      console.log("conectado")
-      if (token !== data.token) return -1;
-      if (useraccount) {
-        socket.current.emit('conetado', data);
-      }
-    });
-  }, [token, useraccount]);
 
   useEffect(() => {
     const fetchToken = async () => {
