@@ -10,7 +10,7 @@ const Navbar = () => {
     const [addEdge, setAddEdge] = useState(false);
     const navigate = useNavigate();
     const {deleteGraph} =  useGraphStore();
-    const { setGraphFromJson, username, setUser, setLoadGraph, setStoreGraph, setFileLoaded, removeVisits } = useGraphStore();
+    const { setGraphFromJson,removeTrack, username, setUser, setLoadGraph, setStoreGraph, setFileLoaded, removeVisits , visits, track} = useGraphStore();
     const formRef = useRef<HTMLDivElement>(null); // Referencia al elemento del formulario
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -54,7 +54,6 @@ const Navbar = () => {
     const handleClickLogOut = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
         setUser(null);
-        localStorage.removeItem("username");
     };
 
     const handleClickLogIn = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -76,6 +75,8 @@ const Navbar = () => {
 
     const handleClickDeleteGraph = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+        if (visits.length > 0) removeVisits();
+        if(track.length > 0) removeTrack();
         deleteGraph();
         setFileLoaded(false);
     
@@ -91,6 +92,7 @@ const Navbar = () => {
         <div className="bg-gray-700 py-4">
             <div className="container mx-auto flex justify-between items-center">
                 <div>
+                
                     <button onClick={handleClickLoadData} className="mr-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-blue-500 bg-transparent hover:bg-blue-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500">
                         <FiUpload className="mr-2" /> FILE
                     </button>

@@ -4,8 +4,15 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: ['Roboto', 'sans-serif'],
+        serif: ['Georgia', 'serif'],
+        mono: ['Menlo', 'monospace'],
       },
+    },
+    fontFamily: {
+      sans: ['Roboto', 'sans-serif'],
+      serif: ['Georgia', 'serif'],
+      mono: ['Menlo', 'monospace'],
     },
   },
   plugins: [],

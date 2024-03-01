@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import useGraphStore from '../store';
-
+import { colorDefault } from '../hooks/utilities';
 
 interface FormData {
   source: string;
@@ -54,7 +54,7 @@ const FormEdge: React.FC = () => {
         return ;
     }
     const tipo = 'lineal';
-    const label = `${source} => ${target}`;
+    const label = `edge`;
     const size= 1;
 
     if(weight < 0){
@@ -73,7 +73,6 @@ const FormEdge: React.FC = () => {
     }
 
     try{
-
         addEdge(source, target, { tipo, label,size, weight });
         setError(null);
 

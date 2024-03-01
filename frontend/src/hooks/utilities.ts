@@ -1,6 +1,5 @@
 import Graph from "graphology";
-import { GraphConstructor } from "graphology-types";
-
+import sha256 from 'crypto-js/sha256';
 interface Node {
   id: string;
   size: number;
@@ -10,19 +9,22 @@ interface Node {
   y:number,
 }
 
-interface Edge {
+export interface Edge {
   source: string;
   target: string;
   type: string;
   label: string;
   size: number;
   weight: number;
+  color: string | null;
 }
 
 export interface GraphData {
   nodes: Node[];
   edges: Edge[];
 }
+
+export const colorDefault = 'brown';
 
 export function createGraphFromJSON( jsonData: GraphData): Graph {
     const newGraph = new Graph();
@@ -37,10 +39,10 @@ export function createGraphFromJSON( jsonData: GraphData): Graph {
         });
     
         jsonData.edges.map((edge) => {
-        const { source, target, type, label, size, weight } = edge;
-        newGraph.addEdge(source, target, { type, label, size, weight});
+        const { source, target, type, label, size, weight, color } = edge;
+        newGraph.addEdge(source, target, { type, label, size, weight, color});
+
         });
-    
     
     }
     catch (error) {
@@ -72,6 +74,7 @@ export function convertToJsonMygraph(mygraph : Graph) {
           type: attributes.type,
           size: attributes.size,
           weight: attributes.weight,
+          color: attributes.color,
         });
     });
     const myjson : GraphData = {
@@ -116,7 +119,7 @@ export function convertirTextoAJSON(texto : string) {
       });
     } else if(esEdge) {
       const nombreArista = partes[0];
-      const peso = partes[1];
+      const peso = Number(partes[1]);
       const source = partes[2];
       const target = partes[3];
 
@@ -127,6 +130,7 @@ export function convertirTextoAJSON(texto : string) {
         label: nombreArista,
         type: 'line',
         weight: peso,
+        color: null,
       });
 
     }
@@ -137,7 +141,8 @@ export function convertirTextoAJSON(texto : string) {
 
 export function convertirJSONATexto(jsonData : GraphData) {
   let text = '';
-
+  text += 'GRAPH 1.0\n';
+  text += 'UNDIRECTED\n';
   text += 'VERTICES\n';
   jsonData.nodes.forEach((node, index) => {
       text += `${node.id} ${node.x} ${node.y}\n`;
@@ -150,4 +155,32 @@ export function convertirJSONATexto(jsonData : GraphData) {
   });
 
   return text;
+}
+
+export function convertirVisitsATexto(visits : string[]) {
+    let text = '';
+  
+    text += 'VISITS 1.0\n';
+    visits.forEach((node) => {
+        text += `${node}\n`;
+    });
+  
+    return text;
+  }
+
+
+export function calcularChecksum(mygraph : GraphData){
+
+    let cadena = '';
+
+    mygraph.nodes.forEach(element => {
+        cadena += `${element.id} : ${element.label} : ${element.size}`;
+    });
+    mygraph.edges.forEach(element => {
+        cadena += `${element.source} : ${element.target}  : ${element.weight}` ;
+    });
+
+    // Calcular un hash SHA-256 para la cadena concatenada
+    const hash = sha256(cadena).toString();
+    return hash;
 }

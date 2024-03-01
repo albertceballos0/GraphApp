@@ -2,13 +2,14 @@ import { IoHomeOutline } from 'react-icons/io5';
 import FormLogin from '../forms/formLogin';
 import useGraphStore from '../store';
 import { useNavigate } from 'react-router-dom';
+import { MouseEventHandler } from 'react';
 
 const Login: React.FC = () => {
   const { username } = useGraphStore();
   const navigate = useNavigate();
 
-  const handleClickHome = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleClickHome = () => {
     navigate('/');
   };
 

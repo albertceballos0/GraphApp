@@ -17,7 +17,7 @@ exports.createUser = async (req, res) => {
     const user= await User.getUserByUsername(username);
     if(!user){
       const userId = await User.createUser(username, password);
-      return res.status(200).json({ id: userId , message: 'Registro correcto', register: true});
+      return res.status(200).json({ id: userId , message: 'Registro correcto', register: true, user: userId});
     }
     else{
       return res.status(200).json({ message: 'Registro fallido, ya existe ese usuario', register: false});
@@ -46,7 +46,20 @@ exports.authenticateUser = async (req, res) => {
     // Aquí puedes utilizar una librería como jsonwebtoken para generar tokens JWT
     // Por ejemplo:
     // const token = generateAuthToken(user);
-    return res.status(200).json({ message: 'Autenticación exitosa', acces: true});
+    return res.status(200).json({ message: 'Autenticación exitosa', acces: true, user: user.id});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+exports.getUserId = async (req, res) => {
+  const username  = req.params.username;
+  try {
+    // Busca al usuario por su nombre de usuario
+    const user = await User.getUserByUsername(username);
+    if (!user) {
+      return res.status(200).json({ message: 'Nombre de usuario incorrecto', validate: false });
+    }
+    return res.status(200).json({  validate: true, user: user.id});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

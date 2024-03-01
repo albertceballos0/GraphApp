@@ -1,21 +1,28 @@
 // graphStore.ts
 import {create} from 'zustand';
 import Graph from 'graphology';
-import { GraphData, convertToJsonMygraph, createGraphFromJSON } from './hooks/utilities';
+import {  GraphData, calcularChecksum, colorDefault, convertToJsonMygraph, createGraphFromJSON } from './hooks/utilities';
 //import jsonData from './hooks/data';
 import ForceSupervisor from "graphology-layout-force/worker";
 import jsonData from './hooks/data';
 
+interface Edge{
+  source: string, 
+  target: string,
+}
+
 type State = {
   mygraph: Graph;
   layout: ForceSupervisor;
-
   username: string | null;
   loadGraph: boolean;
   storeGraph: boolean;
   fileLoaded:boolean;
   loadVisits: boolean;
   visits: string[];
+  track: string[];
+  aristas:  Edge[];
+  tokenCameraApp: string | null,
 };
 
 // Define el tipo de acción
@@ -32,6 +39,10 @@ type Action = {
   addEdge: (source: string, target: string, arg: { tipo: string, label: string,size: number, weight: number }) => void; 
   setVisits: (source: string, target: string, visits: number) => void;
   removeVisits: () => void;
+  removeTrack: () => GraphData;
+  setTrack: (track : string[]) => void;
+  setTokenCameraApp: (token : string) => void;
+  removeTokenCameraApp: () => void;
 };
 
 // Combina ambos tipos para crear el tipo completo del store
@@ -43,6 +54,7 @@ const initializeUsername = () => {
   
   const res = localStorage.getItem("username");
   if(res){
+      
       return res;
   }
   return null;
@@ -63,6 +75,30 @@ const initializeVisits = () => {
   }
   return [];
 }
+const initializeTrack = () => {
+  const res = localStorage.getItem("track");
+  if(res){
+      return res.split(',');
+  }
+  return [];
+}
+const initializeAristas = () => {
+  const res = localStorage.getItem("aristas");
+  if(res){
+      return JSON.parse(res)
+  }
+  return [];
+}
+const initializeToken = () => {
+  const res = localStorage.getItem("token");
+  if(res){
+      return res;
+  }
+  else{
+    return null;
+  }
+}
+
 
 const useGraphStore = create<Store>((set, getState) => {
       const graph = createGraphFromJSON(jsonData);
@@ -78,6 +114,9 @@ const useGraphStore = create<Store>((set, getState) => {
         loadVisits: false,
         fileLoaded: initializeFileLoaded(),
         visits: initializeVisits(),
+        track: initializeTrack(),
+        aristas: initializeAristas(),
+        tokenCameraApp: initializeToken(),
 
         setGraphFromJson: (data: GraphData) => {
             try {
@@ -86,7 +125,6 @@ const useGraphStore = create<Store>((set, getState) => {
                 
                 set({ 
                     mygraph: newGraph, 
-                    layout: layout,
 
                 });
                 localStorage.setItem("mygraph", JSON.stringify(data));
@@ -98,6 +136,8 @@ const useGraphStore = create<Store>((set, getState) => {
         },
         setUser: (name : string | null) => {
           try {
+              if(name) localStorage.setItem('username', name);
+              else localStorage.removeItem('username');
               set(() => ({
                   username: name,
                 }));
@@ -144,7 +184,6 @@ const useGraphStore = create<Store>((set, getState) => {
 
             set(() => ({
                 mygraph: newGraph,
-                layout: layout,
             }));
             layout.start();
 
@@ -159,11 +198,11 @@ const useGraphStore = create<Store>((set, getState) => {
           try{
             const newGraph = getState().mygraph.copy();
             newGraph.addEdge(source,target, { tipo, label, size, weight});
+
             const layout = new ForceSupervisor(newGraph);
 
             set(() => ({
                 mygraph: newGraph,
-                layout: layout,
             }));
             layout.start();
 
@@ -177,13 +216,10 @@ const useGraphStore = create<Store>((set, getState) => {
         deleteGraph : () => {
           try{
             const newGraph = new Graph();
-            const layout = new ForceSupervisor(newGraph);
 
             set(() => ({
                 mygraph: newGraph,
-                layout: layout,
             }));
-            layout.start();
 
             const myjson = convertToJsonMygraph(newGraph);
             localStorage.setItem("mygraph", JSON.stringify(myjson));
@@ -209,16 +245,20 @@ const useGraphStore = create<Store>((set, getState) => {
                   const NodeOptions = getState().mygraph.nodes();
                   const nodos: string[] = Array.from(NodeOptions);   
                   const vis: string[] = [source];
-  
-                  const randomIndices = new Set(); // Conjunto para almacenar valores únicos
+
                   const arrayLength = nodos.length;
 
-                  while (randomIndices.size < visits) {
-                    const randomIndex = Math.floor(Math.random() * arrayLength);
-                    randomIndices.add(randomIndex); // Agregar el índice al conjunto
-                    newGraph.setNodeAttribute(nodos[randomIndex], 'color', 'red');
-                    vis.push(nodos[randomIndex]);
+                  while (vis.length - 1 < visits) {
+                      const randomIndex = Math.floor(Math.random() * arrayLength);
+                      const randomNode = nodos[randomIndex];
+                      
+                      // Verificar si el nodo no es source, target o ya está en vis
+                      if (randomNode !== source && randomNode !== target && !vis.includes(randomNode)) {
+                          newGraph.setNodeAttribute(randomNode, 'color', 'red');
+                          vis.push(randomNode);
+                      }
                   }
+
                   vis.push(target);
                   if(source === target ){
                     newGraph.setNodeAttribute(source, 'color', 'yellow');
@@ -234,7 +274,6 @@ const useGraphStore = create<Store>((set, getState) => {
                   set(() => ({
                     mygraph: newGraph,
                     visits: vis,
-                    layout: layout,
     
                   }));
                   layout.start();
@@ -252,21 +291,116 @@ const useGraphStore = create<Store>((set, getState) => {
 
             const layout = new ForceSupervisor(newGraph);
             localStorage.removeItem('visits');
-            const myjson = convertToJsonMygraph(newGraph);
+            let myjson = convertToJsonMygraph(newGraph);
             localStorage.setItem('mygraph', JSON.stringify(myjson));
 
             set(() => ({
               mygraph: newGraph,
               visits: [],
-              layout: layout,
 
             }));
             layout.start();
 
           }catch(err){
-            console.error("Error generando visitas ", err);              
+            console.error("Error borrando visitas ", err);              
           }
         }, 
+        setTrack : (track : string[]) =>{
+          try{
+            const newGraph = getState().mygraph.copy();
+            const edges : Edge[] = [];
+
+            for (let i = 0; i < track.length - 1; i++) {
+              if(newGraph.hasEdge(newGraph.edge(track[i], track[i + 1]))){
+
+                newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'size', 6);
+                newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'type', 'arrow');
+                newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'color', 'orange');
+
+              }else {
+
+                const edge = newGraph.addEdge(track[i ], track[i + 1]);
+                edges.push({
+                  source: track[i],
+                  target: track[i + 1],
+                });
+                newGraph.setEdgeAttribute(edge,'size', 6);
+                newGraph.setEdgeAttribute(edge,'type', 'arrow');
+                newGraph.setEdgeAttribute(edge,'color', 'orange');
+                newGraph.setEdgeAttribute(edge,'weight',newGraph.getEdgeAttribute(newGraph.edge(track[i+ 1], track[i]), 'weight'));                 
+
+              }
+
+            }
+          
+            const layout = new ForceSupervisor(newGraph);
+            localStorage.setItem('track', track.toString());
+            const myjson = convertToJsonMygraph(newGraph);
+            localStorage.setItem('mygraph', JSON.stringify(myjson));
+            localStorage.setItem('aristas', JSON.stringify(edges));
+
+            set(() => ({
+              mygraph: newGraph,
+              track: track,
+              aristas: edges,
+            }));
+            layout.start();
+
+          }catch(err){
+            console.error("Error seteando track ", err);              
+          }
+        },
+        removeTrack : () =>{
+          try{
+
+            const track = getState().track;
+            const newGraph = getState().mygraph.copy();
+            let myjson = convertToJsonMygraph(newGraph);
+
+            for (let i = 0; i < track.length - 1; i++) {
+                  newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'type', 'line');
+                  newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'size', 1);
+                  newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'color', null);
+                
+            }
+            console.log(getState().aristas);
+            for (let i = 0; i < getState().aristas.length ; i++){
+              console.log(newGraph.getEdgeAttributes(newGraph.edge(getState().aristas[i].source, getState().aristas[i].target)));
+              console.log(newGraph.getEdgeAttributes(newGraph.edge(getState().aristas[i].target, getState().aristas[i].source)));
+              newGraph.dropEdge(newGraph.edge(getState().aristas[i].source, getState().aristas[i].target));
+            }
+            const layout = new ForceSupervisor(newGraph);
+            localStorage.removeItem('track');
+            myjson = convertToJsonMygraph(newGraph);
+            localStorage.setItem('mygraph', JSON.stringify(myjson));
+            localStorage.removeItem('aristas');
+
+            set(() => ({
+              mygraph: newGraph,
+              track: [],
+              aristas: [],
+            }));
+            layout.start();
+            return myjson;
+          }catch(err){
+            console.error("Error borrando track ", err);              
+          }
+        },
+        setTokenCameraApp: (token : string) => {
+
+          localStorage.setItem('token',token);
+          set(() => ({
+            tokenCameraApp: token,
+          }));
+
+        },
+        removeTokenCameraApp: () => {
+            localStorage.removeItem('token');
+            set({
+                tokenCameraApp: null,
+            });
+        },
+
       }
 });
   

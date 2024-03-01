@@ -18,12 +18,12 @@ const FormNode: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null)
 
-  const {mygraph, addNode, setFileLoaded } = useGraphStore();
+  const {mygraph, addNode } = useGraphStore();
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
-    size: 15,
-    color: SizeColorOptions[15][0],
+    size: 7,
+    color: SizeColorOptions[7][0],
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

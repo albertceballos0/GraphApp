@@ -12,7 +12,7 @@ interface FormData{
 
 const FormLogin : React.FC = () => {
 
-  const  { setUser, username }  = useGraphStore();
+  const  { setUser }  = useGraphStore();
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
@@ -34,13 +34,14 @@ const FormLogin : React.FC = () => {
         setError(null);
         setUser(formData.username);
         localStorage.setItem("username", formData.username);
-        navigate('/');
+
       }
      
     } catch (err) {
         console.error("Error al iniciar sesión", err);
     }
   };
+  
   const handleClickRegistro = (e) => {
     navigate('/register');
   }

@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "7DFA5247-EAF9-4CEC-8857-CB9B6D65D95F"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "8727AF9C-FD59-4496-821F-1C34025C0B35"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C94E3E0C-CC62-45F7-BB06-274831EE7F38"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "322"
+            endingLineNumber = "322"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "C94E3E0C-CC62-45F7-BB06-274831EE7F38 - 9ca0db3b7ebbecfa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "314"
+                  endingLineNumber = "314"
+                  offsetFromSymbolStart = "815">
+               </Location>
+               <Location
+                  uuid = "C94E3E0C-CC62-45F7-BB06-274831EE7F38 - 9ca0db3b7ebbecfa"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "314"
+                  endingLineNumber = "314"
+                  offsetFromSymbolStart = "825">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "33451F61-1A63-4229-98A0-AE43EB15A435"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
+            landmarkName = "camiDijkstra(graph, origen, desti)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B69E355A-28AA-4837-957B-5113058C473C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
+            landmarkName = "camiDijkstra(graph, origen, desti)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "045F97C0-538C-4153-B035-04A0EDF1FB6A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
+            landmarkName = "camiDijkstra(graph, origen, desti)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BB4DC2F5-0067-44BE-972D-9C57EA581E62"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "08B03259-5735-46F1-AFAE-9EC1F92A627F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9438736D-51EC-4DBE-868A-3DE448E75F31"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "259"
+            endingLineNumber = "259"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "9438736D-51EC-4DBE-868A-3DE448E75F31 - 9ca0db3b7ebbe2f5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "267"
+                  endingLineNumber = "267"
+                  offsetFromSymbolStart = "1257">
+               </Location>
+               <Location
+                  uuid = "9438736D-51EC-4DBE-868A-3DE448E75F31 - 9ca0db3b7ebbe2f5"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "267"
+                  endingLineNumber = "267"
+                  offsetFromSymbolStart = "1271">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "820A3C52-3259-4E00-A94F-EBA7EFC9B86C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3194FF2E-556F-48F1-B521-AD644541521E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
+            landmarkName = "camiDijkstra(graph, origen, desti)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65BEA53C-A09C-44D5-BA28-73852B640642"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "SalesmanTrackBranchAndBound(graph, visits)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "65BEA53C-A09C-44D5-BA28-73852B640642 - 9ca0db3b7ebbe7fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "132">
+               </Location>
+               <Location
+                  uuid = "65BEA53C-A09C-44D5-BA28-73852B640642 - 9ca0db3b7ebbe7fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "131">
+               </Location>
+               <Location
+                  uuid = "65BEA53C-A09C-44D5-BA28-73852B640642 - 9ca0db3b7ebbe7fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "147">
+               </Location>
+               <Location
+                  uuid = "65BEA53C-A09C-44D5-BA28-73852B640642 - 9ca0db3b7ebbe7fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "149">
+               </Location>
+               <Location
+                  uuid = "65BEA53C-A09C-44D5-BA28-73852B640642 - 9ca0db3b7ebbe7fc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SalesmanTrackBranchAndBound(CGraph&amp;, CVisits&amp;)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/BranchAndBound.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "244"
+                  endingLineNumber = "244"
+                  offsetFromSymbolStart = "145">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "113AB095-02A4-41FE-9ED4-8E25ABD9FFB0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/Graph.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
+            landmarkName = "CGraph::NewEdge(name, value, originName, destionatioName)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7D481E1F-1CEB-446C-ABCF-0363A29A5115"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/Graph.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "279"
+            endingLineNumber = "279"
+            landmarkName = "CGraph::NewEdge(name, value, originName, destionatioName)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2F82F572-0A6D-4EDE-BB72-B507D2BB4E52"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
+            landmarkName = "camiDijkstra(graph, origen, desti)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "779C4CAC-B0A4-4C8C-BBF5-D6988E67F04B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/BranchAndBound.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "camiDijkstra(graph, origen, desti)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D59F712A-613C-4347-ACA7-0A91A003F9E5"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/Dijkstra.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "DijkstraQueue(graph, pStart)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "D59F712A-613C-4347-ACA7-0A91A003F9E5 - 9d48e8fe19cddf83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DijkstraQueue(CGraph&amp;, CVertex*)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/Dijkstra.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "91"
+                  endingLineNumber = "91"
+                  offsetFromSymbolStart = "473">
+               </Location>
+               <Location
+                  uuid = "D59F712A-613C-4347-ACA7-0A91A003F9E5 - 9d48e8fe19cddf83"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DijkstraQueue(CGraph&amp;, CVertex*)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/Dijkstra.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "91"
+                  endingLineNumber = "91"
+                  offsetFromSymbolStart = "372">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BF9F1E43-BBB4-4D95-AA05-46DCEE7AE7B2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "GraphApplication/Dijkstra.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "DijkstraQueue(graph, pStart)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "BF9F1E43-BBB4-4D95-AA05-46DCEE7AE7B2 - 9d48e8fe19cddc58"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DijkstraQueue(CGraph&amp;, CVertex*)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/Dijkstra.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "554">
+               </Location>
+               <Location
+                  uuid = "BF9F1E43-BBB4-4D95-AA05-46DCEE7AE7B2 - 9d48e8fe19cddc58"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "DijkstraQueue(CGraph&amp;, CVertex*)"
+                  moduleName = "GraphApplication"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/albertceballos/project/myapp/GraphApplication/GraphApplication/Dijkstra.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "100"
+                  endingLineNumber = "100"
+                  offsetFromSymbolStart = "453">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
