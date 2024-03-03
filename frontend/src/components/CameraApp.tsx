@@ -74,10 +74,12 @@ const CameraApp: React.FC = () => {
     fetchData();
     const liberar = async () =>{
       await axios.get(`http://localhost:3000/camera/liberarToken/${token}`);
+      await socket.current.emit('logout', { 'token': token });
     }
-    return async () => {
+    return (() => {
       liberar();
-    };
+
+    });
   }, [token, username]);
 
   const handleLogOut = async () => {

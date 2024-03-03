@@ -22,7 +22,6 @@ async def close_peer_connection(pc):
         print("RTCPeerConnection closed")
 
 async def restart_file():
-
     await close_peer_connection(pc)
     print("Restarting file...")
     await asyncio.sleep(1)  

@@ -1,6 +1,6 @@
 
 
-import  { useState, useEffect, ChangeEvent } from 'react';
+import  { useState, ChangeEvent } from 'react';
 import useGraphStore from '../store';
 
 interface FormData {

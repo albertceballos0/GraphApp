@@ -104,11 +104,11 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string }> = ({ han
       setConnected(false);
     });
     socket.current.on('conectado', (data) => {
-      console.log("conectado", data, username);
       if (token !== data.token) return -1;
-      if (username && data.type === 'qr') {
-        socket.current?.emit('conetado', {token : token, type: 'app'});
-      }
+        if (username && data.type === 'qr') {
+          console.log("conectado");
+          socket.current?.emit('conectado', {token : token, type: 'app'});
+        }
     });
     return (() => {
       if (mediaStream) {

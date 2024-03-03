@@ -14,7 +14,6 @@ const CameraQR: React.FC = () => {
 
   useEffect(() => {
     socketRef.current = io('http://localhost:3000');
-
     let identifier: string | null = null;
     const generateQRAndToken = async () => {
       try {
@@ -81,7 +80,6 @@ const CameraQR: React.FC = () => {
       }
     });
     socketRef.current!.on('conectado', async (data) => {
-      console.log("hola", data);
       if (identifier !== data.token) return -1;
       if(data.type === 'app'){
         setCameraApp(true);
