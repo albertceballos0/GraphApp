@@ -363,10 +363,7 @@ const useGraphStore = create<Store>((set, getState) => {
                   newGraph.setEdgeAttribute(newGraph.edge(track[i], track[i + 1]),'color', null);
                 
             }
-            console.log(getState().aristas);
             for (let i = 0; i < getState().aristas.length ; i++){
-              console.log(newGraph.getEdgeAttributes(newGraph.edge(getState().aristas[i].source, getState().aristas[i].target)));
-              console.log(newGraph.getEdgeAttributes(newGraph.edge(getState().aristas[i].target, getState().aristas[i].source)));
               newGraph.dropEdge(newGraph.edge(getState().aristas[i].source, getState().aristas[i].target));
             }
             const layout = new ForceSupervisor(newGraph);

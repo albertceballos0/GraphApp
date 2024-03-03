@@ -55,7 +55,6 @@ export async function handleClickGenerateTrack(graphJSON: GraphData , visits: st
                 if(response){
                     if(response.data.output){
                         const cadena = response.data.output
-                        console.log(response.data);
                         // Expresión regular para extraer el string [V0001 -> ...
                         const regex = /\[(.*?)\]/;
                         const match = cadena.match(regex);

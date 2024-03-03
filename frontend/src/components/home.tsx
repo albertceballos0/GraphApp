@@ -59,14 +59,11 @@ const Home = () => {
         let myjson;
         if(track.length > 0) myjson = removeTrack();
         else myjson = convertToJsonMygraph(mygraph);
-        console.log(calcularChecksum(myjson));
-        console.log(myjson);
         setCargando(true);
 
         const trackGenerated = await handleClickGenerateTrack(myjson, visits, username);
         setCargando(false);
 
-        console.log(trackGenerated);
         if(trackGenerated){
             if(trackGenerated.nodos) setTrack(trackGenerated.nodos);
             else setError(trackGenerated.message);

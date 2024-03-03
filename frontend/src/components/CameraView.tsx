@@ -1,11 +1,8 @@
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
-import io, {Socket } from 'socket.io-client';
+import io, {Socket } from 'socket.io-client';
 import useGraphStore from '../store';
 import { IoLogOut } from 'react-icons/io5';
 
-interface FormData {
-  name: string;
-}
 
 const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined }> = ({ handleLogOut, token }) => {
   const myVideo = useRef<HTMLVideoElement>(null);
@@ -16,11 +13,15 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
   const [connected, setConnected] = useState(true);
   const formularioModeloRef = useRef<HTMLDivElement>(null);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<{ name : string}>({
     name: '',
   });
+  const [onTrack, setOnTrack] = useState<boolean>(false);
   const [errorFormulario, setErrorFormulario] = useState('');
-  const [mensaje, setMensaje] = useState('');
+  const [mensaje, setMensaje] = useState<{message : string, color : string}>({
+    message: '',
+    color: '',
+  });
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -29,7 +30,6 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -85,15 +85,31 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
     });
 
     socket.current.on('onTrack', async (data: {token: string}) => {
-      if (data.token !== token) return;
+      if (data.token !== token) {
+        setOnTrack(true);
+        setMensaje({
+          message : "OCUPADO SERVIDOR DE PYTHON",
+          color: "red",
+        });
+        return;
+      }
       setConnected(true);
-      setMensaje("generando imagenes");
+      setMensaje({
+        message : "generando imagenes", 
+        color: "green",
+      });
     });
 
     socket.current.on('withoutTrack', async (data: {token: string}) => {
-      if (data.token !== token) return;
+      setMensaje({
+        message: '',
+        color: '',
+      });
+      if (data.token !== token) {
+        setOnTrack(false);
+        return;
+      }
       setConnected(false);
-      setMensaje('');
       pcRef.current?.close();
       pcRef.current = new RTCPeerConnection();
     });
@@ -107,7 +123,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       if (token !== data.token) return -1;
         if (username && data.type === 'qr') {
           console.log("conectado");
-          socket.current?.emit('conectado', {token : token, type: 'app'});
+          socket.current?.emit('conectado', {token : token, type: 'app', name: username});
         }
     });
     return (() => {
@@ -143,9 +159,9 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       mediaStream.getTracks().forEach(async (track) => {
         await pcRef.current?.addTrack(track, mediaStream);
       });
+      await socket.current?.emit('onTrack', {'type': 'onTrack', 'token' : token});
       const offer = await pcRef.current?.createOffer();
       await pcRef.current?.setLocalDescription(offer);
-      console.log(token);
       socket.current?.emit('message', { type: 'offer', sdp: pcRef.current?.localDescription?.sdp, token, name });
     }
   };
@@ -181,18 +197,13 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
           <video ref={myVideo} autoPlay muted className="w-full" />
         </div>
         <div className="flex flex-col mt-8 w-3/4 md:w-1/2 lg:w-1/2">
-          {!connected && mediaStream && (
+          {!connected && mediaStream && !onTrack && (
             <button onClick={crearModelo} className="bg-red-900 text-white px-6 py-3 rounded-md font-semibold hover:bg-red-600 transition-colors duration-300 mb-4">
               Crear modelo
             </button>
           )}
-          {!connected && mediaStream && (
-            <button onClick={crearModelo} className="bg-red-900 text-white px-6 py-3 rounded-md font-semibold hover:bg-red-600 transition-colors duration-300">
-              Crear modelo
-            </button>
-          )}
         </div>
-        {mensaje && <p className="mt-8 text-green-500 text-sm ">{mensaje}</p>}
+        {mensaje && <p className={`mt-8 text-${mensaje.color}-500 text-sm`}>{mensaje.message}</p>}
       </div>
       {formularioModelo && mediaStream && (
         <div ref={formularioModeloRef} className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">

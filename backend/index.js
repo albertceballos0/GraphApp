@@ -6,6 +6,7 @@ const graphRoutes = require('./routes/graphRoutes.js');
 const cameraAppRoutes = require('./routes/cameraAppRoutes.js');
 const socketIo = require('socket.io');
 const multer = require('multer');
+const { use } = require('bcrypt/promises.js');
 const upload = multer({ dest: 'uploads/' });
 
 const app = express();
@@ -13,9 +14,7 @@ const app = express();
 app.use(express.json());
 
 // Configurar CORS para permitir solicitudes desde el origen localhost:5173
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://192.168.0.2:5173', 'http://172.20.10.11:5713', 'http://127.0.0.1:5000']
-}));
+app.use(cors());
 
 
 
@@ -27,9 +26,8 @@ app.use('/camera', cameraAppRoutes);
 const server = http.createServer(app);
 const io = socketIo(server);
 let confirm = null;
-let clientQR = null;
 let msg = null;
-
+let username = null;
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
@@ -57,17 +55,18 @@ io.on('connection', (socket) => {
   socket.on('withoutTrack', (message) =>{
     if(msg === message) return -1;
     else{
-      console.log(message);
       msg = message;
+      console.log(message);
       socket.broadcast.emit('withoutTrack' , message);
     }
   });
   socket.on('onTrack', (message) =>{
     if(msg === message) return -1;
     else{
-      console.log(message);
       msg = message;
+      console.log(message);
       socket.broadcast.emit('onTrack' , message);
+
     }
   });
   socket.on('logueado', (message) =>{

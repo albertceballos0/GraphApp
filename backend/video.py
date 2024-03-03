@@ -35,7 +35,6 @@ async def on_message(data):
         name = data.get('name')
         token = data.get('token')
         print("offer", token, data.get('name'))
-
         await handle_offer(data)
 
 @sio.on('prepared')
@@ -52,7 +51,6 @@ async def handle_offer(data):
     await sio.emit('message', {'type': 'answer', 'sdp': pc.localDescription.sdp, 'token': data['token']})
 
 async def on_track(track):
-    await sio.emit('onTrack', {'type': 'onTrack', 'token' : token})
     print("Received video track")    
     if not os.path.exists('./fileRecognition/'+ name):
         os.makedirs('./fileRecognition/' + name)

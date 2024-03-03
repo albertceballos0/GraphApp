@@ -21,10 +21,8 @@ const LoadGraph = () => {
           try{
             const response = await axios.get(`http://localhost:3000/graph/files/${username}`);
             setPersonalGraphs(response.data);
-            console.log(response.data);
           }catch(err){
-            console.error('Error fetching data:', error);
-
+            console.error('Error fetching data:', err);
           }
         }
       } catch (error) {
@@ -58,7 +56,7 @@ const LoadGraph = () => {
     <div className={`${username  ? 'w-1/2' : 'w-full'}` }>
         <h2 className="text-xl font-semibold mb-4">Grafos por defecto:</h2>
         <ul className="max-h-80 overflow-y-auto space-y-2 w-full">
-            {apiData.map(item => (
+            {apiData.map( item => (
             <li
                 onClick={() => setSelectedItem(item.id)}
                 onMouseOver={() => setMouseOver(item.id)}

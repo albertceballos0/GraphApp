@@ -9,7 +9,7 @@ const CameraQR: React.FC = () => {
   const navigate = useNavigate();
   const [cameraApp, setCameraApp] = useState<boolean>(false);
   const [data, setData] = useState<string>('');
-
+  const [name, setName] = useState<string>('');
   const socketRef = useRef<Socket | null>(null);
 
   useEffect(() => {
@@ -37,8 +37,10 @@ const CameraQR: React.FC = () => {
             socketRef.current!.emit('conectado', { token: identifier, type: 'qr' });
             return response.data.imageQr;
           }
+          return null;
         } catch (error) {
           console.error('Error al validar el token:', error);
+          return null;
         }
       }
       return null;
@@ -54,36 +56,40 @@ const CameraQR: React.FC = () => {
     };
     loadQRImage();
 
-    socketRef.current!.on('logueado', (data) => {
+    socketRef.current!.on('logueado', (data : {token : string, name: string}) => {
       if (identifier !== data.token) return -1;
       setCameraApp(true);
-      setData('conexion establecida');
+      setName(data.name);
+      setData(`conexion establecida ${data.name ? ` - ${data.name}` : ''}`);
     });
-    socketRef.current!.on('logout', (data) => {
+    socketRef.current!.on('logout', (data : {token : string})=> {
       console.log(data.token, identifier);
       if (identifier !== data.token) return -1;
+      setName('');
       setCameraApp(false);
     });
-    socketRef.current!.on('withoutTrack', async (data) => {
+    socketRef.current!.on('withoutTrack', async (data : {token : string, type: string, name: string})=> {
       if (identifier !== data.token) return -1;
       const message_type = data.type;
       if (message_type === 'withoutTrack') {
-        setData(message_type);
+        setData(`conexion establecida ${name ? ` - ${name}` : ''}`);
       }
     });
 
-    socketRef.current!.on('onTrack', async (data) => {
+    socketRef.current!.on('onTrack', async (data : {token : string, type: string}) => {
       if (identifier !== data.token) return -1;
       const message_type = data.type;
       if (message_type === 'onTrack') {
         setData(message_type);
       }
     });
-    socketRef.current!.on('conectado', async (data) => {
+  
+    socketRef.current!.on('conectado', async(data : {token : string, type: string, name: string})=> {
       if (identifier !== data.token) return -1;
       if(data.type === 'app'){
         setCameraApp(true);
-        setData('conexion establecida');
+        setName(data.name);
+        setData(`conexion establecida ${data.name ? ` - ${data.name}` : ''}`);
       }
     });
   }, []);
