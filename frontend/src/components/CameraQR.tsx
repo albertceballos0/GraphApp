@@ -83,7 +83,7 @@ const CameraQR: React.FC = () => {
         setData(message_type);
       }
     });
-  
+    
     socketRef.current!.on('conectado', async(data : {token : string, type: string, name: string})=> {
       if (identifier !== data.token) return -1;
       if(data.type === 'app'){
