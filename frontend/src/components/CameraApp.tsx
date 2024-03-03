@@ -6,9 +6,6 @@ import CameraView from './CameraView';
 import useGraphStore from '../store';
 import io, { Socket } from 'socket.io-client';
 
-interface UserData {
-  user: string;
-}
 
 const CameraApp: React.FC = () => {
   const { token } = useParams<{ token: string }>();
@@ -25,7 +22,7 @@ const CameraApp: React.FC = () => {
       try {
         if (token) {
           const response = await axios.get<{ validate: boolean; users: number }>(`http://localhost:3000/camera/validate-token/${token}`);
-          const userId = await axios.get<UserData>(`http://localhost:3000/users/userId/${username}`);
+          const userId = await axios.get<{ user: number}>(`http://localhost:3000/users/userId/${username}`);
           if (response.data.validate === true) {
             if (!username) {
               if (response.data.users === 0) return true;

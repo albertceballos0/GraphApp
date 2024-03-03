@@ -7,7 +7,7 @@ interface FormData {
   name: string;
 }
 
-const CameraView: React.FC<{ handleLogOut: () => void; token: string }> = ({ handleLogOut, token }) => {
+const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined }> = ({ handleLogOut, token }) => {
   const myVideo = useRef<HTMLVideoElement>(null);
   const [formularioModelo, setFormularioModelo] = useState(false);
   const socket = useRef<Socket>();
