@@ -54,13 +54,15 @@ const CameraQR: React.FC = () => {
         generateQRAndToken();
       }
     };
-    loadQRImage();
 
     socketRef.current!.on('logueado', (data : {token : string, name: string}) => {
       if (identifier !== data.token) return -1;
       setCameraApp(true);
       setName(data.name);
       setData(`conexion establecida ${data.name ? ` - ${data.name}` : ''}`);
+      setTimeout(() => {
+        setData('');
+      }, 2000); 
     });
     socketRef.current!.on('logout', (data : {token : string})=> {
       console.log(data.token, identifier);
@@ -72,7 +74,10 @@ const CameraQR: React.FC = () => {
       if (identifier !== data.token) return -1;
       const message_type = data.type;
       if (message_type === 'withoutTrack') {
-        setData(`conexion establecida ${name ? ` - ${name}` : ''}`);
+        setData(`acabado el registro de cara`);
+        setTimeout(() => {
+          setData('');
+        }, 2000);
       }
     });
 
@@ -90,9 +95,16 @@ const CameraQR: React.FC = () => {
         setCameraApp(true);
         setName(data.name);
         setData(`conexion establecida ${data.name ? ` - ${data.name}` : ''}`);
+        setTimeout(() => {
+          setData('');
+        }, 2000);
       }
     });
+
+    loadQRImage();
+
   }, []);
+
 
   return (
     <div className='bg-red-800 h-full'>
@@ -109,9 +121,10 @@ const CameraQR: React.FC = () => {
               {qrImageUrl && <img src={qrImageUrl} alt="QR Code" />}
             </div>
           ) : (
-            <div>
+
+            data.length > 0 && (<div>
               <h2 className='text-white'>{data}</h2>
-            </div>
+            </div>)
           )
         }
       </div>

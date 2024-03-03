@@ -2,9 +2,10 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import io, {Socket } from 'socket.io-client';
 import useGraphStore from '../store';
 import { IoLogOut } from 'react-icons/io5';
+import axios from 'axios';
 
 
-const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined }> = ({ handleLogOut, token }) => {
+const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined}> = ({ handleLogOut, token }) => {
   const myVideo = useRef<HTMLVideoElement>(null);
   const [formularioModelo, setFormularioModelo] = useState(false);
   const socket = useRef<Socket>();
@@ -113,7 +114,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       pcRef.current?.close();
       pcRef.current = new RTCPeerConnection();
     });
-
+    
     socket.current.on('prepared', async (data: {message: string}) => {
       if (data.message === 'js') return;
       console.log("prepared");
@@ -159,10 +160,31 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       mediaStream.getTracks().forEach(async (track) => {
         await pcRef.current?.addTrack(track, mediaStream);
       });
-      await socket.current?.emit('onTrack', {'type': 'onTrack', 'token' : token});
-      const offer = await pcRef.current?.createOffer();
-      await pcRef.current?.setLocalDescription(offer);
-      socket.current?.emit('message', { type: 'offer', sdp: pcRef.current?.localDescription?.sdp, token, name });
+    try{
+      const userId = await axios.get(`http://localhost:3000/users/userId/${username}`);
+      const formData = {
+        userId: userId.data.user,
+        name: name,
+      }
+      const res = await axios.post('http://localhost:3000/filerecognition/addfile',formData);
+      console.log(res);
+      if(!res.data.added){
+        setMensaje({
+          message: "Ya existe ese nombre",
+          color: "red",
+        });
+        setTimeout(() => {
+          setMensaje({ message:"", color:""});
+        }, 2000);
+        return;
+      }
+    }catch (error){
+      console.error('Error al agregar la cara:', error);
+    }
+    await socket.current?.emit('onTrack', {'type': 'onTrack', 'token' : token});
+    const offer = await pcRef.current?.createOffer();
+    await pcRef.current?.setLocalDescription(offer);
+    socket.current?.emit('message', { type: 'offer', sdp: pcRef.current?.localDescription?.sdp, token, name });
     }
   };
 

@@ -61,7 +61,6 @@ async def on_track(track):
     
     start_time = time.time()
     total_time = time.time()
-    total = 0
     while time.time() - total_time < 6:
         try:
             frame = await track.recv()
@@ -76,7 +75,6 @@ async def on_track(track):
                 resized_image = cv2.resize(image_bgr, (320, 240))
                 file_path = f'./fileRecognition/{name}/frame_{frame_count}.jpg'
                 cv2.imwrite(file_path, resized_image)
-                total += 1 
 
         except Exception as e:
             print(f"An error occurred while processing frame: {e}")

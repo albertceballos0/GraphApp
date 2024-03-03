@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const cors = require('cors');
 const userRoutes = require('./routes/userRoutes.js');
+const fileRecognitionRoutes = require('./routes/fileRecognition.js');
 const graphRoutes = require('./routes/graphRoutes.js');
 const cameraAppRoutes = require('./routes/cameraAppRoutes.js');
 const socketIo = require('socket.io');
@@ -22,6 +23,7 @@ app.use(cors());
 app.use('/users', userRoutes);
 app.use('/graph', graphRoutes);
 app.use('/camera', cameraAppRoutes);
+app.use('/filerecognition', fileRecognitionRoutes);
 
 const server = http.createServer(app);
 const io = socketIo(server);
