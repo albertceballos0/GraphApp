@@ -6,6 +6,7 @@ const fileRecognitionController = require('../controllers/fileRecognitionControl
 
 router.post('/addfile', fileRecognitionController.addFile);         // Obtener todos los archivos por defecto
 router.get('/getfiles/:userId', fileRecognitionController.getFiles);         // Obtener todos los archivos por defecto
+router.get('/deletefile/:filename', fileRecognitionController.deleteFile);         // Obtener todos los archivos por defecto
 
 module.exports = router;
 

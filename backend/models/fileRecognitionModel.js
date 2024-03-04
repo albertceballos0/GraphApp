@@ -20,5 +20,13 @@ module.exports = {
     const [result] = await pool.query('INSERT INTO userFaces (name, userId) VALUES (?, ?)', [name, userId]);
     return result.insertId;
   },
+  async getFile(filename){
+    const [result] = await pool.query('SELECT id FROM userFaces WHERE name = ?', [filename]);
+    return result;
+  },
+  async deleteFile(id){
+    const [result] = await pool.query('DELETE FROM userFaces WHERE id = ?', [id]);
+    return result;
+  },
 
 }

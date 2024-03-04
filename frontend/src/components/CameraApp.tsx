@@ -11,14 +11,14 @@ const CameraApp: React.FC = () => {
   const { token } = useParams<{ token: string }>();
   const { username, setUser } = useGraphStore();
   const [validToken, setValidToken] = useState<boolean | null>(false);
-  const [useraccount, setUserAccount] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const socket = useRef<Socket>(io('http://localhost:3000'));
-
+  const socket = useRef<Socket>();
 
   useEffect(() => {
+    socket.current = io('http://localhost:3000');
     const fetchToken = async () => {
+      console.log(username);
       try {
         if (token) {
           const response = await axios.get<{ validate: boolean; users: number }>(`http://localhost:3000/camera/validate-token/${token}`);
@@ -33,13 +33,11 @@ const CameraApp: React.FC = () => {
             } else {
               if (response.data.users === 0) {
                 await axios.get(`http://localhost:3000/camera/token-free/${token}/${username}`);
-                setUserAccount(username);
-                socket.current.emit('logueado', { 'name': username, 'token': token });
+                socket.current?.emit('logueado', { 'name': username, 'token': token });
                 return true;
               }
               if (response.data.users === userId.data.user) {
-                setUserAccount(username);
-                socket.current.emit('logueado', { 'name': username, 'token': token });
+                socket.current?.emit('logueado', { 'name': username, 'token': token });
                 return true;
               }
               setError("Usuario ocupando token");
@@ -69,21 +67,28 @@ const CameraApp: React.FC = () => {
     };
 
     fetchData();
+    socket.current.on('conectado', (data) => {
+      if (token !== data.token) return -1;
+        if (username && data.type === 'qr') {
+          socket.current?.emit('conectado', {token : token, type: 'app', name: username});
+        }
+    });
     const liberar = async () =>{
       await axios.get(`http://localhost:3000/camera/liberarToken/${token}`);
-      await socket.current.emit('logout', { 'token': token });
+      socket.current?.emit('logout', { 'token': token });
     }
     return (() => {
       liberar();
-
+      socket.current?.close();
     });
-  }, [token, username]);
+
+  
+  }, [username]);
 
   const handleLogOut = async () => {
     await axios.get(`http://localhost:3000/camera/liberarToken/${token}`);
     setUser(null);
-    setUserAccount(null);
-    socket.current.emit('logout', { 'token': token });
+    socket.current?.emit('logout', { 'token': token });
   };
 
   if (loading) {
@@ -96,7 +101,7 @@ const CameraApp: React.FC = () => {
   return (
     <div>
       {validToken ? (
-        !useraccount ? (
+        !username ? (
           <div className="bg-gray-800 h-full">
             <div className="flex flex-col items-center justify-center min-h-screen">
               <div className="bg-white p-8 rounded-lg shadow-md w-80">

@@ -41,12 +41,12 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
     socket.current = io('http://localhost:3000');
     pcRef.current = new RTCPeerConnection();
 
-    socket.current.emit('prepared', { message: 'js' });
-
     const startMediaStream = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
         setMediaStream(stream);
+        socket.current?.emit('prepared', { message: 'js' });
+        console.log("onprepared");
         if (myVideo.current) myVideo.current.srcObject = stream;
       } catch (error) {
         console.error('Error accessing media devices:', error);
@@ -81,6 +81,12 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       const message_type = data.type;
       if (message_type === 'answer') {
         await handleAnswer(data);
+        setOnTrack(true);
+        setConnected(true);
+        setMensaje({
+          message : "generando imagenes", 
+          color: "green",
+        });
         socket.current?.emit('confirm', { type: 'confirm', token });
       }
     });
@@ -94,11 +100,6 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
         });
         return;
       }
-      setConnected(true);
-      setMensaje({
-        message : "generando imagenes", 
-        color: "green",
-      });
     });
 
     socket.current.on('withoutTrack', async (data: {token: string}) => {
@@ -106,8 +107,8 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
         message: '',
         color: '',
       });
+      setOnTrack(false);
       if (data.token !== token) {
-        setOnTrack(false);
         return;
       }
       setConnected(false);
@@ -120,13 +121,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       console.log("prepared");
       setConnected(false);
     });
-    socket.current.on('conectado', (data) => {
-      if (token !== data.token) return -1;
-        if (username && data.type === 'qr') {
-          console.log("conectado");
-          socket.current?.emit('conectado', {token : token, type: 'app', name: username});
-        }
-    });
+
     return (() => {
       if (mediaStream) {
         console.log("limpiando");
@@ -136,17 +131,19 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
       if (pcRef.current) {
         pcRef.current.close();
       }
+      if(socket.current) socket.current.close();
     });
 
   }, []);
 
-  const handleClickLogOut = async () => {
+  const handleClickLogOut = async (event: React.FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     if (mediaStream) {
       const tracks = mediaStream.getTracks();
       tracks.forEach(track => track.stop());
     }
     if (pcRef.current) {
-      await pcRef.current.close();
+      pcRef.current.close();
     }
     handleLogOut();
   };
@@ -158,7 +155,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
     }
     if (mediaStream) {
       mediaStream.getTracks().forEach(async (track) => {
-        await pcRef.current?.addTrack(track, mediaStream);
+        pcRef.current?.addTrack(track, mediaStream);
       });
     try{
       const userId = await axios.get(`http://localhost:3000/users/userId/${username}`);
@@ -167,7 +164,6 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
         name: name,
       }
       const res = await axios.post('http://localhost:3000/filerecognition/addfile',formData);
-      console.log(res);
       if(!res.data.added){
         setMensaje({
           message: "Ya existe ese nombre",
@@ -194,12 +190,16 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
 
   const handleSubmitCrearModelo = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    if (formData.name.length === 0) {
-      setErrorFormulario('No puede estar vacio');
+
+    const trimmedName = formData.name.trim().toLowerCase();
+
+    console.log(trimmedName);
+    if (trimmedName.length === 0) {
+      setErrorFormulario('No puede estar vacío');
       return;
     }
     setFormularioModelo(false);
-    await handleOffer(formData.name);
+    await handleOffer(trimmedName);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -212,7 +212,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
     <div className='h-screen flex flex-col bg-white'>
       <div className="flex items-center justify-between px-4 py-8 bg-red-900 text-white">
         <h1 className="text-lg font-semibold">GraphApp - {username}</h1>
-        <IoLogOut onClick={handleClickLogOut} className="text-red-500 text-3xl rounded-md border border-red-500 hover:border-black hover:text-black focus:outline-none" />
+        <IoLogOut onClick={handleClickLogOut} className="text-red-800 text-3xl rounded-md border border-red-800 hover:border-black hover:text-black focus:outline-none" />
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">
         <div className="md:w-1/2 lg:w-1/3 border-3 border-gray-700 rounded-md overflow-hidden">

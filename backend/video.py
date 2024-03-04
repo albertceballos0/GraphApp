@@ -41,6 +41,7 @@ async def on_message(data):
 async def on_prepared(data):
     if data.get('message') == 'python': 
         return -1
+    print("Prepared to receive offer")
     await sio.emit('prepared', { 'message' : 'python'})
 
 async def handle_offer(data):
