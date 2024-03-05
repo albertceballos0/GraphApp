@@ -11,7 +11,7 @@ export async function initialize(mygraph: Graph , num : number) {
         const formVisits = {
             checksum: checksum,
         };
-        await axios.post(`http://localhost:3000/graph/initialize/${num}`, formVisits);
+        await axios.post(`${import.meta.env.VITE_API_URL}/graph/initialize/${num}`, formVisits);
     }catch(err){
         console.error("error generando archivo visitas", err);
 
@@ -29,7 +29,7 @@ export async function handleClickGenerateTrack(graphJSON: GraphData , visits: st
             const formVisits = {
                 visits: visitsText,
             };
-            await axios.post(`http://localhost:3000/graph/visits`, formVisits);
+            await axios.post(`${import.meta.env.VITE_API_URL}/graph/visits`, formVisits);
         }catch(err){
             console.error("error generando archivo visitas", err);
 
@@ -43,14 +43,14 @@ export async function handleClickGenerateTrack(graphJSON: GraphData , visits: st
                 username: username,
             }
             
-            let response = await axios.post(`http://localhost:3000/graph/generate`, formGraph);    
+            let response = await axios.post(`${import.meta.env.VITE_API_URL}/graph/generate`, formGraph);    
             try{
 
                 const formExec = {
                     archivo: response.data.archivo,
                 }
                 
-                response = await axios.post(`http://localhost:3000/graph/track`, formExec);
+                response = await axios.post(`${import.meta.env.VITE_API_URL}/graph/track`, formExec);
                 
                 if(response){
                     if(response.data.output){
@@ -73,7 +73,7 @@ export async function handleClickGenerateTrack(graphJSON: GraphData , visits: st
                                 try{
 
                                     console.log(formExec.archivo, "HOLA");
-                                    await axios.get(`http://localhost:3000/graph/borrar/${formExec.archivo}`);
+                                    await axios.get(`${import.meta.env.VITE_API_URL}/graph/borrar/${formExec.archivo}`);
                                 }
                                 catch(err){
                                     console.log("Error borrando archivo");

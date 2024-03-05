@@ -14,8 +14,6 @@ function App() {
         <Route path='/Register' element= {<Register />}/>
         <Route path='/camera' element= {<CameraQR />}/>
         <Route path="/camera/mobileApp/:token" element={<CameraApp />}/>
-
-
       </Routes>
     </Router>
   )

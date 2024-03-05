@@ -16,13 +16,13 @@ const CameraApp: React.FC = () => {
   const socket = useRef<Socket>();
 
   useEffect(() => {
-    socket.current = io('http://localhost:3000');
+    socket.current = io(`${import.meta.env.VITE_SOCKET_URL}`);
     const fetchToken = async () => {
       console.log(username);
       try {
         if (token) {
-          const response = await axios.get<{ validate: boolean; users: number }>(`http://localhost:3000/camera/validate-token/${token}`);
-          const userId = await axios.get<{ user: number}>(`http://localhost:3000/users/userId/${username}`);
+          const response = await axios.get<{ validate: boolean; users: number }>(`${import.meta.env.VITE_API_URL}/camera/validate-token/${token}`);
+          const userId = await axios.get<{ user: number}>(`${import.meta.env.VITE_API_URL}/users/userId/${username}`);
           if (response.data.validate === true) {
             if (!username) {
               if (response.data.users === 0) return true;
@@ -32,7 +32,7 @@ const CameraApp: React.FC = () => {
               }
             } else {
               if (response.data.users === 0) {
-                await axios.get(`http://localhost:3000/camera/token-free/${token}/${username}`);
+                await axios.get(`${import.meta.env.VITE_API_URL}/camera/token-free/${token}/${username}`);
                 socket.current?.emit('logueado', { 'name': username, 'token': token });
                 return true;
               }
@@ -74,7 +74,7 @@ const CameraApp: React.FC = () => {
         }
     });
     const liberar = async () =>{
-      await axios.get(`http://localhost:3000/camera/liberarToken/${token}`);
+      await axios.get(`${import.meta.env.VITE_API_URL}/camera/liberarToken/${token}`);
       socket.current?.emit('logout', { 'token': token });
     }
     return (() => {
@@ -86,7 +86,7 @@ const CameraApp: React.FC = () => {
   }, [username]);
 
   const handleLogOut = async () => {
-    await axios.get(`http://localhost:3000/camera/liberarToken/${token}`);
+    await axios.get(`${import.meta.env.VITE_API_URL}/camera/liberarToken/${token}`);
     setUser(null);
     socket.current?.emit('logout', { 'token': token });
   };

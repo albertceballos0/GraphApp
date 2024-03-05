@@ -24,10 +24,10 @@ const FormLogin : React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/users/login', formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, formData);
       if(!response.data.acces){
             setError(response.data.message)
       }else {
@@ -42,7 +42,7 @@ const FormLogin : React.FC = () => {
     }
   };
   
-  const handleClickRegistro = (e) => {
+  const handleClickRegistro = () => {
     navigate('/register');
   }
 

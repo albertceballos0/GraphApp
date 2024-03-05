@@ -90,7 +90,7 @@ const StoreGraph = () => {
             username: username,
         }
     
-        await axios.post(`http://localhost:3000/graph/generate`, formGraph);    
+        await axios.post(`${import.meta.env.VITE_API_URL}/graph/generate`, formGraph);    
         setStoreGraph(false);
       
 

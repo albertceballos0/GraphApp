@@ -38,7 +38,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
   }, []);
 
   useEffect(() => {
-    socket.current = io('http://localhost:3000');
+    socket.current = io(`${import.meta.env.VITE_SOCKET_URL}`);
     pcRef.current = new RTCPeerConnection();
 
     const startMediaStream = async () => {
@@ -158,12 +158,12 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
         pcRef.current?.addTrack(track, mediaStream);
       });
     try{
-      const userId = await axios.get(`http://localhost:3000/users/userId/${username}`);
+      const userId = await axios.get(`${import.meta.env.VITE_API_URL}/users/userId/${username}`);
       const formData = {
         userId: userId.data.user,
         name: name,
       }
-      const res = await axios.post('http://localhost:3000/filerecognition/addfile',formData);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/filerecognition/addfile`,formData);
       if(!res.data.added){
         setMensaje({
           message: "Ya existe ese nombre",

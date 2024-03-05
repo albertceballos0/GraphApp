@@ -1,6 +1,5 @@
 import  { useState, ChangeEvent } from 'react';
 import useGraphStore from '../store';
-import { convertToJsonMygraph } from '../hooks/utilities';
 
 interface FormData {
   name: string;

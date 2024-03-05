@@ -1,7 +1,7 @@
 // graphStore.ts
 import {create} from 'zustand';
 import Graph from 'graphology';
-import {  GraphData, calcularChecksum, colorDefault, convertToJsonMygraph, createGraphFromJSON } from './hooks/utilities';
+import {  GraphData, convertToJsonMygraph, createGraphFromJSON } from './hooks/utilities';
 //import jsonData from './hooks/data';
 import ForceSupervisor from "graphology-layout-force/worker";
 import jsonData from './hooks/data';
@@ -100,7 +100,7 @@ const initializeToken = () => {
 }
 
 
-const useGraphStore = create<Store>((set, getState) => {
+const useGraphStore = create<Store & Action>((set, getState) => {
       const graph = createGraphFromJSON(jsonData);
       const layout = new ForceSupervisor(graph);
       layout.start();
@@ -291,7 +291,7 @@ const useGraphStore = create<Store>((set, getState) => {
 
             const layout = new ForceSupervisor(newGraph);
             localStorage.removeItem('visits');
-            let myjson = convertToJsonMygraph(newGraph);
+            const myjson = convertToJsonMygraph(newGraph);
             localStorage.setItem('mygraph', JSON.stringify(myjson));
 
             set(() => ({

@@ -1,9 +1,13 @@
 import  { useState, useEffect } from 'react';
-
 import axios from 'axios';
+
 import useGraphStore from '../store';
 import { convertirTextoAJSON } from '../hooks/utilities';
+
+
 const LoadGraph = () => {
+
+
   const [apiData, setApiData] = useState<string[]>([]);
   const [personalGraphs, setPersonalGraphs] = useState<string[]>([]);
   const {username } = useGraphStore();
@@ -11,15 +15,14 @@ const LoadGraph = () => {
   const [mouseOver, setMouseOver] = useState<number | null>(null);
   const { setLoadGraph , setGraphFromJson, removeTrack,setFileLoaded, removeVisits, track, visits} = useGraphStore();
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/graph/files');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/graph/files`);
         setApiData(response.data);
         if(username){
           try{
-            const response = await axios.get(`http://localhost:3000/graph/files/${username}`);
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/graph/files/${username}`);
             setPersonalGraphs(response.data);
           }catch(err){
             console.error('Error fetching data:', err);
@@ -38,7 +41,7 @@ const LoadGraph = () => {
     setLoadGraph(false);
     if(!selectedItem) return;
     try{
-        const response = await axios.get(`http://localhost:3000/graph/${selectedItem}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/graph/${selectedItem}`);
         const myjson = convertirTextoAJSON(response.data);
         if (visits.length > 0) removeVisits();
         if(track.length > 0) removeTrack();

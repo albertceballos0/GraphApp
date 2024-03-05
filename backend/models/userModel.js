@@ -1,13 +1,12 @@
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcrypt');
 
+require('dotenv').config();
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  port: 3306,
-  database: 'myapp',
-  connectionLimit: 10,
-  queueLimit: 0
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  port: process.env.DB_PORT,
+  database: process.env.DB_DATABASE,
 });
 
 module.exports = {

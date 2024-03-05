@@ -3,13 +3,14 @@ const Users = require('../models/userModel');
 
 const qr = require('qrcode');
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 exports.generateQR = async (req, res) => {
 
     try {
         const uniqueToken = uuidv4();
         const response = await Tokens.createToken(uniqueToken);
-        const url = `http://192.168.0.2:5173/camera/mobileApp/${uniqueToken}`; // URL para el QR
+        const url = `${process.env.URL_QR}/camera/mobileApp/${uniqueToken}`; // URL para el QR
         const imageQr = await qr.toDataURL(url); // Genera el QR como una URL de imagen
     
         // Envía la URL del QR al cliente
@@ -33,7 +34,7 @@ exports.validateQR = async (req, res) => {
 
       if(currentDate < t.expiration_date){
 
-            const url = `http://192.168.0.2:5173/camera/mobileApp/${t.token}`; // URL para el QR
+            const url = `${process.env.URL_QR}/camera/mobileApp/${t.token}`; // URL para el QR
             const imageQr = await qr.toDataURL(url); // Genera el QR como una URL de imagen
             
             // Envía la URL del QR al cliente

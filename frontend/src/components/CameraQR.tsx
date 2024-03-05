@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { IoHomeOutline, IoTrash, IoReturnDownBack } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +8,7 @@ const CameraQR: React.FC = () => {
   const [qrImageUrl, setQrImageUrl] = useState<string>('');
   const navigate = useNavigate();
   const [cameraApp, setCameraApp] = useState<boolean>(false);
-  const [data, setData] = useState<{message: string, color:string} | null>(null);
+  const [message, setMessage] = useState<{message: string, color:string} | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [name, setName] = useState<string | null>(null);
   const [files, setFiles] = useState<{name: string}[]>([]);
@@ -17,14 +17,13 @@ const CameraQR: React.FC = () => {
   const [mouseOver, setMouseOver] = useState<{id: number, name: string} | null>(null);
   const socketRef = useRef<Socket | null>(null);
 
-
   useEffect(() => {
     const fetchFiles = async () => {
       if (!name) return;
       if(onTrack) return;
       console.log("hola")
-      const userId = await axios.get(`http://localhost:3000/users/userId/${name}`);
-      const response = await axios.get<{ faces: { id: number; name: string; userId: string }[] }>(`http://localhost:3000/filerecognition/getfiles/${userId.data.user}`);
+      const userId = await axios.get(`${import.meta.env.VITE_API_URL}/users/userId/${name}`);
+      const response = await axios.get<{ faces: { id: number; name: string; userId: string }[] }>(`${import.meta.env.VITE_API_URL}/filerecognition/getfiles/${userId.data.user}`);
       console.log(response?.data.faces);
       setFiles(response?.data.faces);
     }
@@ -36,11 +35,11 @@ const CameraQR: React.FC = () => {
   
   useEffect(() => {
 
-    socketRef.current = io('http://localhost:3000');
+    socketRef.current = io(`${import.meta.env.VITE_SOCKET_URL}`);
     let identifier: string | null = null;
     const generateQRAndToken = async () => {
       try {
-        const response = await axios.get<{ imageQr: string; token: string }>('http://localhost:3000/camera/generate-qr');
+        const response = await axios.get<{ imageQr: string; token: string }>(`${import.meta.env.VITE_API_URL}/camera/generate-qr`);
         setQrImageUrl(response.data.imageQr);
         localStorage.setItem('token', response.data.token);
         identifier = response.data.token;
@@ -54,7 +53,7 @@ const CameraQR: React.FC = () => {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get<{ validate: boolean; imageQr: string }>(`http://localhost:3000/camera/validate-token/${token}`);
+          const response = await axios.get<{ validate: boolean; imageQr: string }>(`${import.meta.env.VITE_API_URL}/camera/validate-token/${token}`);
           if (response.data.validate === true) {
             identifier = token;
             socketRef.current!.emit('conectado', { token: identifier, type: 'qr' });
@@ -137,7 +136,7 @@ const CameraQR: React.FC = () => {
   
   const handleDeleteFile = async () => {
     if (!mouseOver) return;
-    const response = await axios.get(`http://localhost:3000/filerecognition/deletefile/${mouseOver.name}`);
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/filerecognition/deletefile/${mouseOver.name}`);
     console.log(response.data, mouseOver.name);
     if (response.data.deleted) {
       const newFiles = files.filter((_, index) => index !== mouseOver.id);

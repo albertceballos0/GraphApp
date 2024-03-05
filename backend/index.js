@@ -10,6 +10,9 @@ const multer = require('multer');
 const { use } = require('bcrypt/promises.js');
 const upload = multer({ dest: 'uploads/' });
 
+
+require('dotenv').config();
+
 const app = express();
 
 app.use(express.json());
@@ -25,11 +28,17 @@ app.use('/graph', graphRoutes);
 app.use('/camera', cameraAppRoutes);
 app.use('/filerecognition', fileRecognitionRoutes);
 
+
 const server = http.createServer(app);
 const io = socketIo(server);
+
+
+
 let confirm = null;
 let msg = null;
 let username = null;
+
+
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('disconnect', () => {
@@ -99,7 +108,8 @@ io.on('connection', (socket) => {
 });
 
 
-const PORT = process.env.PORT || 3000;
+
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log(`Servidor Express escuchando en http://localhost:${PORT}`);
 });

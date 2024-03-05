@@ -2,7 +2,7 @@ const Files = require('../models/fileRecognitionModel');
 const Users = require('../models/userModel');
 
 
-exports.addFile = async (req, res) => {
+exports.addFileController = async (req, res) => {
     console.log(req.body);
     try {
         const userId = req.body.userId;

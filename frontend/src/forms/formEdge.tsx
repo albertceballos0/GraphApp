@@ -1,6 +1,5 @@
-import React, { useState, ChangeEvent, useEffect } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import useGraphStore from '../store';
-import { colorDefault } from '../hooks/utilities';
 
 interface FormData {
   source: string;

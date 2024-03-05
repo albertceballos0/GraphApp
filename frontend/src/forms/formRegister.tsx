@@ -12,7 +12,7 @@ interface FormData{
 
 const FormRegister : React.FC = () => {
 
-  const  { setUser, username }  = useGraphStore();
+  const  { setUser }  = useGraphStore();
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
@@ -24,10 +24,10 @@ const FormRegister : React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/users/register', formData);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/users/register`, formData);
       console.log(response.data)
       if(!response.data.register){
             setError(response.data.message)
@@ -42,7 +42,7 @@ const FormRegister : React.FC = () => {
         console.error("Error al registrarse", err);
     }
   };
-  const handleClickLogin = (e) => {
+  const handleClickLogin = () => {
     navigate('/login');
   }
 
