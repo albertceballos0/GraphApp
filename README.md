@@ -5,14 +5,18 @@ This is a sample application built with React and Express.
 
 ## Installation
 
-1. Clone the repository: `git clone https://github.com/your-username/my-app.git`
-2. Navigate to the project directory: `cd my-app`
-3. Install dependencies: `npm install`
+1. Clone the repository: `git clone https://github.com/albertceballos0/myapp.git`
+2. Navigate to the project directory: `cd myapp`
+3. Navigate to backend and to frontend and install the dependencies: `pnpm install`
+4. In backend is a video.py install the dependencies pip install -r requeriments.txt
+
 
 ## Usage
 
-1. Start the server: `npm start`
-2. Open your browser and visit: `http://localhost:3000`
+1. Run backend and frontend with `pnpm run dev` 
+2. Run the python server `python video.py`
+3. Open your browser and visit: `http://localhost:5173`
+
 
 ## C++ TSP Algorithm
 
@@ -20,9 +24,9 @@ The repository also includes a C++ program that solves the Traveling Salesman Pr
 
 To run the TSP program:
 
-1. Navigate to the `tsp` directory: `cd tsp`
-2. Compile the program: `g++ tsp.cpp -o tsp`
-3. Run the program: `./tsp`
+1. Navigate to the `tsp` directory: `cd GraphApplication/GraphApplication`
+2. Compile the main program
+3. Once you haver compiled all the C++ program, we need to paste the executable program into backend folder
 
 ## Contributing
 

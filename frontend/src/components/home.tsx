@@ -12,7 +12,7 @@ import LoadGraph from "../forms/LoadGraph";
 import StoreGraph from "../forms/StoreGraph";
 import LoadVisits from '../forms/LoadVisits';
 import { handleClickGenerateTrack } from '../hooks/handleClick';
-import { calcularChecksum, convertToJsonMygraph } from '../hooks/utilities';
+import {  convertToJsonMygraph } from '../hooks/utilities';
 import { IoCamera } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 
