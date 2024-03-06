@@ -22,10 +22,10 @@ const CameraApp: React.FC = () => {
       console.log(username);
       try {
         if (token) {
-
           
           const response = await axios.get<{ validate: boolean; users: number }>(`${import.meta.env.VITE_API_URL}/camera/validate-token/${token}`);
-          //const userId = await axios.get<{ user: number}>(`${import.meta.env.VITE_API_URL}/users/userId/${username}`);
+          console.log(response.data);
+          const userId = await axios.get<{ user: number}>(`${import.meta.env.VITE_API_URL}/users/userId/${username}`);
           if (response.data.validate === true) {
             if (!username) {
               if (response.data.users === 0) return true;
@@ -35,16 +35,17 @@ const CameraApp: React.FC = () => {
               }
             } else {
               if (response.data.users === 0) {
+                console.log(username);
                 await axios.get(`${import.meta.env.VITE_API_URL}/camera/token-free/${token}/${username}`);
                 socket.current?.emit('logueado', { 'name': username, 'token': token });
                 return true;
               }
-
+              console.log("HOLA")
               //si es el mismo usuario que tiene el token puede permitir conectarse al token con el mismo usuario a la vez 
-              //if (response.data.users === userId.data.user) {
-                //socket.current?.emit('logueado', { 'name': username, 'token': token });
-                //return true;
-              //}
+              if (response.data.users === userId.data.user) {
+                socket.current?.emit('logueado', { 'name': username, 'token': token });
+                return true;
+              }
               setError("Usuario ocupando token");
               return false;
             }
@@ -53,6 +54,7 @@ const CameraApp: React.FC = () => {
             return false;
           }
         } else {
+          console.log('No hay token error de pagina ');
           setError("No hay token error de pagina ");
           return false;
         }

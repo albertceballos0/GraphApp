@@ -17,12 +17,15 @@ type State = {
   username: string | null;
   loadGraph: boolean;
   storeGraph: boolean;
+  optAddEdge: boolean;
+  optAddNode: boolean;
   fileLoaded:boolean;
   loadVisits: boolean;
   visits: string[];
   track: string[];
   aristas:  Edge[];
   tokenCameraApp: string | null,
+  optCargando: boolean;
 };
 
 // Define el tipo de acción
@@ -35,6 +38,8 @@ type Action = {
   deleteGraph: () => void; 
   setStoreGraph: (opt: boolean) => void;
   setLoadVisits: (opt: boolean) => void;
+  setAddEdge: (opt: boolean) => void;
+  setAddNode: (opt: boolean) => void;
   addNode: (arg0: string, arg1: { size: number; color: string; x: number; y: number; }) => void;  
   addEdge: (source: string, target: string, arg: { tipo: string, label: string,size: number, weight: number }) => void; 
   setVisits: (source: string, target: string, visits: number) => void;
@@ -43,6 +48,7 @@ type Action = {
   setTrack: (track : string[]) => void;
   setTokenCameraApp: (token : string) => void;
   removeTokenCameraApp: () => void;
+  setOptCargando: (opt: boolean) => void;
 };
 
 // Combina ambos tipos para crear el tipo completo del store
@@ -68,6 +74,7 @@ const initializeFileLoaded = () => {
   }
   return false;
 }
+
 const initializeVisits = () => {
   const res = localStorage.getItem("visits");
   if(res){
@@ -113,10 +120,13 @@ const useGraphStore = create<Store & Action>((set, getState) => {
         storeGraph: false,
         loadVisits: false,
         fileLoaded: initializeFileLoaded(),
+        optAddEdge: false,
+        optAddNode: false,
         visits: initializeVisits(),
         track: initializeTrack(),
         aristas: initializeAristas(),
         tokenCameraApp: initializeToken(),
+        optCargando: false,
 
         setGraphFromJson: (data: GraphData) => {
             try {
@@ -155,6 +165,15 @@ const useGraphStore = create<Store & Action>((set, getState) => {
           }
 
         },
+        setOptCargando: (opt: boolean) =>{
+          try{
+              set(() => ({
+                optCargando: opt,
+              }));
+          }catch(err){
+            console.error("Error cambiando optCargando ", err);
+          }
+        },
         setFileLoaded: (opt: boolean) =>{
           try{
               localStorage.setItem("fileLoaded", String(opt));
@@ -173,6 +192,26 @@ const useGraphStore = create<Store & Action>((set, getState) => {
               }));
           }catch(err){
             console.error("Error cambiando store Graph ", err);
+          }
+
+        },
+        setAddEdge: (opt: boolean) =>{
+          try{
+              set(() => ({
+                optAddEdge: opt,
+              }));
+          }catch(err){
+            console.error("Error cambiando add edge ", err);
+          }
+
+        },
+        setAddNode: (opt: boolean) =>{
+          try{
+              set(() => ({
+                optAddNode: opt,
+              }));
+          }catch(err){
+            console.error("Error cambiando add node ", err);
           }
 
         },

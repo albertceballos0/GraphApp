@@ -210,9 +210,9 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
 
   return (
     <div className='h-screen flex flex-col bg-white'>
-      <div className="flex items-center justify-between px-4 py-8 bg-red-900 text-white">
+      <div className="flex items-center justify-between h-20 px-4 py-8 bg-red-900 text-white">
         <h1 className="text-lg font-semibold">GraphApp - {username}</h1>
-        <IoLogOut onClick={handleClickLogOut} className="text-red-800 text-3xl rounded-md border border-red-800 hover:border-black hover:text-black focus:outline-none" />
+        <IoLogOut onClick={handleClickLogOut} className="text-white text-3xl rounded-md border border-white hover:border-black hover:text-black focus:outline-none" />
       </div>
       <div className="flex flex-col items-center justify-center flex-grow">
         <div className="md:w-1/2 lg:w-1/3 border-3 border-gray-700 rounded-md overflow-hidden">

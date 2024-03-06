@@ -190,7 +190,7 @@ const CameraQR: React.FC = () => {
           </div>
           ) : 
             <div>
-              <div className='flex items-center justify-between px-4 py-8 bg-slate-900'>
+              <div className='flex items-center justify-between px-4 py-8 h-20 bg-slate-900'>
                 <IoHomeOutline
                   onClick={() => navigate('/')}
                   className="text-gray-300 p-1 border-gray-300 text-3xl rounded-md border cursor-pointer hover:border-slate-900 hover:bg-slate-500 hover:text-slate-900"
@@ -229,7 +229,7 @@ const CameraQR: React.FC = () => {
                   {
                   selectedItem ?    
                   <div className='w-1/2 max-h-full'>
-                    <div className=' h-16 p-4 bg-slate-600 flex items-center justify-between'>
+                    <div className='h-16 p-4 bg-slate-600 flex items-center justify-between'>
                       <IoReturnDownBack
                               onClick={() => setSelectedItem(null)}
                               className="text-gray-300 p-1 border-gray-300 text-3xl rounded-md border cursor-pointer hover:border-slate-900 hover:bg-slate-500 hover:text-slate-900"
