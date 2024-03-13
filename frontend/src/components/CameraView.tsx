@@ -180,7 +180,7 @@ const CameraView: React.FC<{ handleLogOut: () => void; token: string | undefined
     await socket.current?.emit('onTrack', {'type': 'onTrack', 'token' : token});
     const offer = await pcRef.current?.createOffer();
     await pcRef.current?.setLocalDescription(offer);
-    socket.current?.emit('message', { type: 'offer', sdp: pcRef.current?.localDescription?.sdp, token, name });
+    socket.current?.emit('message', { type: 'offer', sdp: pcRef.current?.localDescription?.sdp,'token': token,'name': name, 'user' : username });
     }
   };
 

@@ -143,11 +143,17 @@ const Navbar = () => {
                             <FiUpload className="mr-2" /> LOAD VISITS
                         </button>
                     }
-                    {visits.length > 2 && !optCargando && (
+                    {visits.length > 2 && 
+                     (!optCargando ? (
                         <button onClick={handleClickTrack} className="w-full h-10 px-3 py-2 mt-1 uppercase inline-flex items-center  border border-transparent text-sm font-medium rounded-md text-green-500 bg-transparent hover:bg-green-600 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-green-500">
                             <IoAnalytics className="mr-2"/>generate track
                         </button>
-                    )}
+                     ):
+                        <button onClick={handleClickTrack} className="w-full h-10 px-3 py-2 mt-1 uppercase inline-flex items-center  border border-transparent text-sm font-medium rounded-md text-gray-500  bg-green-600 bg-opacity-20 cursor-not-allowed">
+                            <IoAnalytics className="mr-2"/>generate track
+                        </button> )                    
+                    }
+                    
 
                 </div>
                 <div className='h-1/3 w-full flex items-end mb-3 '>
