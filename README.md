@@ -186,6 +186,14 @@ The Branch and Bound algorithm for TSP works as follows:
 6. **Termination**:
    - The algorithm terminates when all nodes have been explored and there are no more promising extensions available.
 
+### Images
+
+Resume branch and bound.
+![Branch & bound](/assets/bab.png)
+![visits](/assets/visites.png)
+
+
+
 ### Implementation in `GraphApplication`
 In the `GraphApplication` project, the Branch and Bound algorithm for TSP is implemented in the function:
 ```cpp
