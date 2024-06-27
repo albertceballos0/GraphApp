@@ -1,8 +1,3 @@
-
-const sha256 = require('crypto-js/sha256');
-
-
-
 exports.convertirTextoAJSON = (texto)  =>{
   const lineas = texto.trim().split('\n');
   let esNodos  = false;
