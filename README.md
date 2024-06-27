@@ -150,51 +150,49 @@ Here's a visual representation of the project's structure:
 - **multer**: Middleware for handling `multipart/form-data` for file uploads.
 - **dotenv**: Module to load environment variables from a `.env` file.
 
-## Algoritmo Branch and Bound para el Problema del Vendedor Viajero (TSP)
+## Branch and Bound algorithm resolving TSP
+### Introduction
 
-### Introducción
+The Branch and Bound algorithm is a branching and pruning technique used to solve the Traveling Salesman Problem (TSP), a fundamental combinatorial problem in optimization. The goal is to find the shortest route that visits each city exactly once and returns to the starting point.
 
-El algoritmo Branch and Bound es una técnica de ramificación y poda utilizada para resolver el Problema del Vendedor Viajero (TSP), un problema combinatorio fundamental en la optimización. El objetivo es encontrar el recorrido más corto que visita cada ciudad exactamente una vez y regresa al punto de partida.
+### Algorithm operation
 
-### Funcionamiento del Algoritmo
+The Branch and Bound algorithm for TSP works as follows:
 
-El algoritmo Branch and Bound para TSP funciona de la siguiente manera:
+1. **Initialization**:
+   - Starts with an empty partial path and an initially infinite best solution value.
 
-1. **Inicialización**:
-   - Comienza con un recorrido parcial vacío y un valor de mejor solución inicialmente infinito.
+2. **Exploration**:
+   - Uses a priority queue (min-heap) to store and expand search tree nodes.
+   - Each node represents a partially visited city with a certain cumulative length.
 
-2. **Exploración**:
-   - Utiliza una cola de prioridad (min-heap) para almacenar y expandir los nodos del árbol de búsqueda.
-   - Cada nodo representa una ciudad parcialmente visitada con una cierta longitud acumulada.
+3. **Branching**:
+   - The current node is expanded by branching into all possible child nodes that have not yet been visited.
+   - Calculate the length of each possible extension of the route and estimate its final cost by adding a lower bound.
 
-3. **Ramificación**:
-   - Se expande el nodo actual ramificándolo en todos los nodos hijos posibles que aún no han sido visitados.
-   - Calcula la longitud de cada posible extensión del recorrido y estima su costo final agregando una cota inferior (lower bound).
+4. **Pruning**:
+   - Prune the tree branches that already exceed the best known solution (upper limit).
+   - Continue expanding the most promising nodes (smallest total length) until all possible branches have been explored.
 
-4. **Poda**:
-   - Podar las ramas del árbol que ya superan la mejor solución conocida (upper bound).
-   - Continúa expandiendo los nodos más prometedores (menor longitud total) hasta que todas las ramas posibles se hayan explorado.
+5. **Best Solution Update**:
+   - Updates the best route found every time a complete and better solution than the one currently known is found.
 
-5. **Actualización de la Mejor Solución**:
-   - Actualiza el mejor recorrido encontrado cada vez que se encuentra una solución completa y mejor que la actualmente conocida.
+6. **Termination**:
+   - The algorithm terminates when all nodes have been explored and there are no more promising extensions available.
 
-6. **Terminación**:
-   - El algoritmo termina cuando todos los nodos han sido explorados y no hay más extensiones prometedoras disponibles.
+### Implementation in `GraphApplication`
 
-### Implementación en `GraphApplication`
-
-En el proyecto `GraphApplication`, el algoritmo Branch and Bound para TSP está implementado en la función:
+In the `GraphApplication` project, the Branch and Bound algorithm for TSP is implemented in the function:
 
 ```cpp
 CTrack SalesmanTrackBranchAndBound(CGraph& g, CVisits& visits);
 ```
 
-### Consideraciones
+### Considerations
 
-- **Eficiencia**: El algoritmo Branch and Bound reduce la cantidad de exploración mediante la poda de soluciones no prometedoras, pero puede ser computacionalmente costoso para instancias grandes del problema TSP.
+- **Efficiency**: The Branch and Bound algorithm reduces the amount of exploration by pruning unpromising solutions, but can be computationally expensive for large instances of the TSP problem.
 
-- **Optimalidad**: Garantiza encontrar la solución óptima para el TSP, siempre que se calcule correctamente la cota inferior y superior.
-
+- **Optimality**: Guarantees finding the optimal solution for the TSP, as long as the lower and upper bound are correctly calculated.
 
 ## Contributing
 
