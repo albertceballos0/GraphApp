@@ -134,6 +134,7 @@ Here's a visual representation of the project's structure:
 ├───.gitignore
 └───README.md
 ```
+
 ## Packages Used
 
 ### Frontend
