@@ -6,7 +6,7 @@ This is a sample application built with React and Express.
 ## Installation
 
 1. Clone the repository: `git clone https://github.com/albertceballos0/myapp.git`
-2. Navigate to the project directory: `cd myapp`
+2. Navigate to the project directory: `cd GraphApp`
 3. Navigate to backend and to frontend and install the dependencies: `pnpm install`
 4. In backend is a video.py install the dependencies pip install -r requeriments.txt
 
