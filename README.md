@@ -55,6 +55,7 @@ To run the TSP program:
 
 Here's a visual representation of the project's structure:
 
+```plaintext
 ├───GraphApplication/
 │   ├───Backtracking.cpp
 │   ├───BranchAndBound.cpp
@@ -132,7 +133,7 @@ Here's a visual representation of the project's structure:
 │   └───vite.config.ts
 ├───.gitignore
 └───README.md
-
+```
 ## Packages Used
 
 ### Frontend
