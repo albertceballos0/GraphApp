@@ -1,4 +1,4 @@
-# My App
+# GraphApp
 
 This is a sample application built with React and Express.
 
