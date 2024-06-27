@@ -27,7 +27,6 @@ list<CVertex*> visites;
 
 void backtrackingRec(CVertex* pActual)
 {
-
     if (pActual == vDesti) {
 
 
