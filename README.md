@@ -189,7 +189,9 @@ The Branch and Bound algorithm for TSP works as follows:
 ### Images
 
 Resume branch and bound.
+
 ![Branch & bound](/assets/bab.png)
+
 ![visits](/assets/visites.png)
 
 
