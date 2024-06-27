@@ -1,0 +1,20 @@
+GRAPH 1.0
+UNDIRECTED
+VERTICES
+borja -6.049796875630448 -1.4064200915535607
+albert -12.870669941852212 -13.263990034636414
+pedro 4.977662517218221 -14.79445001015006
+paco 3.210910808740338 18.351828131996268
+antonio -5.6334099075403214 7.4464977046924945
+maria 13.348280362225601 5.121466059501304
+EDGES
+edge 0 borja albert
+edge 0 borja pedro
+edge 0 borja antonio
+edge 0 albert antonio
+edge 0 albert pedro
+edge 0 paco antonio
+edge 0 paco borja
+edge 0 maria paco
+edge 0 maria antonio
+edge 0 maria pedro
