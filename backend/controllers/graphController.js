@@ -1,5 +1,5 @@
-const Graph = require('../models/graphModel');
-const Users = require('../models/userModel');
+const Graph = require('../models/graphModel.js');
+const Users = require('../models/userModel.js');
 
 const fs = require('fs');
 const utils  = require('../utils.js');
@@ -34,7 +34,7 @@ exports.getFileGraph = async (req, res) => {
   try {
     const id = req.params.id;
     const filePath = await Graph.getFilePathById(id);
-    const path = `/Users/albertceballos/project/myapp/TestSalesMan/${filePath.archivo}`;
+    const path = `/Users/albertceballos/project/GraphApp/TestSalesMan/${filePath.archivo}`;
     fs.readFile(path, 'utf8', (err, data) => {
       if (err) {
         console.error('Error al leer el archivo:', err);
@@ -58,6 +58,7 @@ exports.setCheckSum = async (req, res) => {
       res.status(500).json({ message: `Error mal ${error.message}` });
     }
 };
+
 exports.getGraph = async (req, res) => {
   const checksum = req.params.checksum;
   try {
@@ -115,7 +116,7 @@ exports.setGraph = async (req,res) => {
         const data = utils.convertirJSONATexto(graphJSON);
 
 
-        const directorio = '/Users/albertceballos/project/myapp/TestSalesMan';
+        const directorio = '/Users/albertceballos/project/GraphApp/TestSalesMan';
         const path = `${directorio}/${archivo}`;
         
         // Verificar si el directorio existe, si no, crearlo
@@ -143,7 +144,7 @@ exports.setVisits = async (req,res) => {
     const {visits} = req.body;
 
     try{
-      const directorio = '/Users/albertceballos/project/myapp/TestSalesMan';
+      const directorio = '/Users/albertceballos/project/GraphApp/TestSalesMan';
       const rutaCompleta = `${directorio}/visites.VIS`;
       
       // Verificar si el directorio existe, si no, crearlo
