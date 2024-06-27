@@ -2,8 +2,17 @@
 
 This is a sample application built with React and Express.
 
-## Installation
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Frontend](#frontend)
+- [Backend Routes](#backend-routes)
+- [Branch and Bound algorithm resolving TSP](#branch-and-bound-algorithm-resolving-tsp)
+- [Contributing](#contributing)
+- [License](#license)
 
+## Installation
 1. Clone the repository:
     ```bash
     git clone https://github.com/albertceballos0/myapp.git
@@ -19,42 +28,33 @@ This is a sample application built with React and Express.
     ```
 4. Create database for the project
     ```bash
-    cd backend && ./backup.sh
+    cd database && ./backup.sh
 
-
+5. Navigate to the `GraphApplication` directory:
+    ```bash
+    cd GraphApplication/GraphApplication
+    ```
+6. Compile the main program:
+    ```bash
+    g++ -o GraphApplication main.cpp
+    ```
+7. Move the compiled executable to the backend directory:
+    ```bash
+    mv GraphApplication ../../backend/
+    ```
 ## Usage
 
-1. Configurate the .env files with all the information about your db and backend.
-
+1. Configurate the `.env` files with all the information about your db and backend.
 2. Run the backend and frontend:
     ```bash
     pnpm run dev
     ```
 3. Open your browser and visit: `http://localhost:5173`
 
-## C++ TSP Algorithm
-
-The repository also includes a C++ program that solves the Traveling Salesman Problem (TSP). The TSP is a classic optimization problem in computer science, where the goal is to find the shortest possible route that visits a given set of cities and returns to the starting city.
-
-To run the TSP program:
-
-1. Navigate to the `GraphApplication` directory:
-    ```bash
-    cd GraphApplication/GraphApplication
-    ```
-2. Compile the main program:
-    ```bash
-    g++ -o GraphApplication main.cpp
-    ```
-3. Move the compiled executable to the backend directory:
-    ```bash
-    mv GraphApplication ../../backend/
-    ```
 
 ## Project Structure
 
 Here's a visual representation of the project's structure:
-
 ```plaintext
 ├───GraphApplication/
 │   ├───Backtracking.cpp
@@ -134,23 +134,23 @@ Here's a visual representation of the project's structure:
 ├───.gitignore
 └───README.md
 ```
+
 ## Frontend
+Frontend app in home page
 
 ![frontend GraphApp](/assets/frontend.png)
 
 ## Backend Routes
-
 ### User Backend Routes (/users)
-
 ```plaintext
-    GET /users/
-    POST /users/register
-    POST /users/login
-    GET /users/userId/:username
+GET /users/
+POST /users/register
+POST /users/login
+GET /users/userId/:username
 ```
+
 ### Graph Backend Routes (/graph)
 ```plaintext
-Copiar código
 GET /graph/files
 GET /graph/files/:username
 GET /graph/:id
@@ -164,70 +164,40 @@ GET /graph/borrar/:archivo
 
 Each route corresponds to CRUD operations related to users and graphs.
 
-## Packages Used
-
-### Frontend
-
-- **react**: Library for building user interfaces.
-- **typescript**: Superset of JavaScript that adds static types.
-- **vite**: Next-generation frontend tooling for faster builds.
-- **tailwindcss**: Utility-first CSS framework for rapid UI development.
-
-### Backend
-
-- **express**: Web framework for Node.js.
-- **mongoose**: MongoDB object modeling tool (if using MongoDB).
-- **multer**: Middleware for handling `multipart/form-data` for file uploads.
-- **dotenv**: Module to load environment variables from a `.env` file.
-
 ## Branch and Bound algorithm resolving TSP
 ### Introduction
-
 The Branch and Bound algorithm is a branching and pruning technique used to solve the Traveling Salesman Problem (TSP), a fundamental combinatorial problem in optimization. The goal is to find the shortest route that visits each city exactly once and returns to the starting point.
 
 ### Algorithm operation
-
 The Branch and Bound algorithm for TSP works as follows:
-
 1. **Initialization**:
    - Starts with an empty partial path and an initially infinite best solution value.
-
 2. **Exploration**:
    - Uses a priority queue (min-heap) to store and expand search tree nodes.
    - Each node represents a partially visited city with a certain cumulative length.
-
 3. **Branching**:
    - The current node is expanded by branching into all possible child nodes that have not yet been visited.
    - Calculate the length of each possible extension of the route and estimate its final cost by adding a lower bound.
-
 4. **Pruning**:
    - Prune the tree branches that already exceed the best known solution (upper limit).
    - Continue expanding the most promising nodes (smallest total length) until all possible branches have been explored.
-
 5. **Best Solution Update**:
    - Updates the best route found every time a complete and better solution than the one currently known is found.
-
 6. **Termination**:
    - The algorithm terminates when all nodes have been explored and there are no more promising extensions available.
 
 ### Implementation in `GraphApplication`
-
 In the `GraphApplication` project, the Branch and Bound algorithm for TSP is implemented in the function:
-
 ```cpp
 CTrack SalesmanTrackBranchAndBound(CGraph& g, CVisits& visits);
 ```
 
 ### Considerations
-
 - **Efficiency**: The Branch and Bound algorithm reduces the amount of exploration by pruning unpromising solutions, but can be computationally expensive for large instances of the TSP problem.
-
 - **Optimality**: Guarantees finding the optimal solution for the TSP, as long as the lower and upper bound are correctly calculated.
 
 ## Contributing
-
 Contributions are welcome!
-
 1. - Clone the repository. `git clone https://github.com/albertceballos0/GraphApp.git`
 2. - Create a new branch `git checkout -b feature/new-feature`
 3. - Make your changes.
@@ -236,5 +206,5 @@ Contributions are welcome!
 6. - Open a pull request.
 
 ## License
-
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
+
