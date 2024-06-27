@@ -138,6 +138,31 @@ Here's a visual representation of the project's structure:
 
 ![frontend GraphApp](/assets/frontend.png)
 
+## Backend Routes
+
+### User Backend Routes (/users)
+
+```plaintext
+    GET /users/
+    POST /users/register
+    POST /users/login
+    GET /users/userId/:username
+```
+### Graph Backend Routes (/graph)
+```plaintext
+Copiar código
+GET /graph/files
+GET /graph/files/:username
+GET /graph/:id
+GET /graph/comprove/:checksum
+POST /graph/generate
+POST /graph/visits
+POST /graph/track
+POST /graph/initialize/:id
+GET /graph/borrar/:archivo
+```
+
+Each route corresponds to CRUD operations related to users and graphs.
 
 ## Packages Used
 
