@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Graph.h"
 #include <ctime>
-#include <omp.h> // Incluir la cabecera de OpenMP
 using namespace std;
 
 CGraph mygraph(NULL);
