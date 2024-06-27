@@ -134,6 +134,10 @@ Here's a visual representation of the project's structure:
 ├───.gitignore
 └───README.md
 ```
+## Frontend
+
+![frontend GraphApp]('./assets/frontend.png')
+
 
 ## Packages Used
 
