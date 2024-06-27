@@ -190,9 +190,9 @@ CTrack SalesmanTrackBranchAndBound(CGraph& g, CVisits& visits);
 
 ### Consideraciones
 
-**Eficiencia**: El algoritmo Branch and Bound reduce la cantidad de exploración mediante la poda de soluciones no prometedoras, pero puede ser computacionalmente costoso para instancias grandes del problema TSP.
+- **Eficiencia**: El algoritmo Branch and Bound reduce la cantidad de exploración mediante la poda de soluciones no prometedoras, pero puede ser computacionalmente costoso para instancias grandes del problema TSP.
 
-**Optimalidad**: Garantiza encontrar la solución óptima para el TSP, siempre que se calcule correctamente la cota inferior y superior.
+- **Optimalidad**: Garantiza encontrar la solución óptima para el TSP, siempre que se calcule correctamente la cota inferior y superior.
 
 
 ## Contributing
